@@ -162,7 +162,8 @@ function handleAddItemsAfterNavigation() {
     updateTotalPrice();
     updateTotalPayment();
   } else {
-    console.error(`Order with index ${orderIndex} not found.`);
+    // console.error(`Order with index ${orderIndex} not found.`);
+    null
   }
 }
 
