@@ -8,11 +8,12 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link href="style.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
 
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light mx-5" style="height: 2.9rem;">
+  <nav class="navbar bg-light navbar-expand-lg position-fixed navbar-light z-1" style="height: 2.9rem; width: 100%; top: 0rem;left: 3rem">
     <div class="container-fluid ">
       <ul class="nav nav-pills" id="pills-tab " role="tablist" style="font-weight: bold;">
         <li class="nav-item" role="presentation">
@@ -36,14 +37,14 @@
     </div>
   </nav>
 
-  <aside class=" bg-body-tertiary ">
-    <div class="sidebar container-fluid position-fixed d-flex flex-column pt-2 justify-content-between"
+  <aside class="bg-light pt-5" style="position: fixed; top: 0; left: 0; height: 100vh; width: 3.2rem;">
+    <div class="sidebar container d-flex flex-column justify-content-between"
       style="height: calc(100vh - 2.9rem); width: 3.2rem;">
       <div class="logo">
-        <img class="img" style="height: 2rem; width: 2rem;"
+        <img class="img mt-" style="height: 2rem; width: 2rem;"
           src="https://cdn.pixabay.com/photo/2014/04/02/16/23/coffee-307147_1280.png" />
       </div>
-      <div class="profile mb-5">
+      <div class="profile">
         <img class="img" style="height: 2rem; width: 2rem;"
           src="https://cdn.pixabay.com/photo/2014/04/02/16/23/coffee-307147_1280.png" />
       </div>
@@ -52,15 +53,100 @@
     </div>
   </aside>
 
-  <div class="content bg-primary-subtle p-4 rounded-1" style="margin: 0rem 4.4rem;">
+  <div class="content p-1 rounded-1" style="margin: 0.5rem 0rem 0rem 3rem;">
     <div class="tab-content" id="pills-tabContent">
       <div class="tab-pane fade show active " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
-        <h1>Menu</h1>
-        <div id="menucards-container" class="d-flex flex-wrap "></div>
+        <div class="order-container d-flex flex-row w-100" style="margin-top: 2rem;">
+
+          <div class="menu-page bg-primar rounded-3 py-3 px-4 me-2"  style="width:63%;background-color: #EEF5FF;">
+            <h1 class="w-50">Order</h1>
+            <form class="d-flex" role="search">
+              <div class="search mb-2 position-relative" style="width: 55%;">
+                <input class="form-control me-2  py-1 ps-5 pe-2" type="search" placeholder="Search" aria-label="Search"
+                  style="width:100%;">
+                <img class="searchbtn position-absolute "
+                  src="https://cdn.pixabay.com/photo/2018/04/18/18/56/look-for-3331255_1280.png" alt=""
+                  style="height:1.2rem ; width: 1.2rem; top: 0.5rem; left: 0.4rem;" />
+              </div>
+            </form>
+
+            <div id="menucards-container" class=" d-flex flex-wrap overflow-y-auto" style="height: calc(100vh - 100px);"></div>
+            
+          </div>
+          <div class="order-form py-2 px-2 rounded-3 mx-2 shadow-sm" style="width: 26rem; ">
+            <form action="">
+              <select id="order-select1" class="select-table bg-primary text-light p-2 rounded-2 mb-1" style="height: 2.5rem; width: 98%; margin-left: 0.2rem; font-weight: bold; cursor: pointer;">
+                <option class="table-option mb-3 text-black bg-light" style="font-weight: 500;" value="Table-No">Table No</option>
+                <option class="table-option mb-3 text-black bg-light" style="font-weight: 500;" value="Table-1">Table No.1</option>
+                <option class="table-option mb-3 text-black bg-light" style="font-weight: 500;" value="Table-2">Table No.2</option>
+                <option class="table-option mb-3 text-black bg-light" style="font-weight: 500;" value="Table-3">Table No.3</option>
+              </select>
+              <input id="order-nameInput" class=" border-0  shadow-sm mb-1 rounded-3 ms-2 p-1 px-2" style="width: 97%; font-weight: 700; background-color: #EEF5FF;" type="text" placeholder="Name:"/>
+              <ul class="nav nav-tabs mt-1 border-0" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="order-dine-in" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Dine</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="order-togo" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">To Go</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="order-delivery" data-bs-toggle="tab" data-bs-target="#messages" type="button" role="tab" aria-controls="messages" aria-selected="false">Delivery</button>
+                </li>
+              </ul>
+           
+            <div class="order-bill-container">
+              <div class="order-header d-flex justify-content-between">
+                <div class="order-item">Item</div>
+                <div class="order-quantity d-flex justify-content-end align-items-center" style="width: 6rem;">Qty</div>
+
+                <div class="order-price-name">Price</div>
+                <div class="order-actions"></div>
+              </div>
+              <div id="order-body" class="order-body " style="height: calc(38vh - 40px); overflow-y: auto;"></div>
+            </div>
+            <select name="kot" id="1" class="dateTimeSelect bg-secondary-subtle text-dark px-2 rounded-2 mt-2 align-text-top " style="height: 1.2rem; width: 94%; margin-left: 0.2rem; font-weight: 500; cursor: pointer;font-size: smaller;">
+              <option value="kot1" class="option mb-3 text-black bg-light" style="font-weight: 400;"> </option>
+            </select>
+            
+            <div id="" class="total bg-dark-subtle mt-2 py-2 px-3 rounded-2">
+              <div class="SubTotal d-flex justify-content-between w-100 " style="height: 1.8rem;font-weight: 500;">
+                <p>Sub Total</p>
+                <p id="total-price"></p>
+              </div>
+              <div class="d-flex justify-content-between w-100" style="font-weight: 500;height: 1.8rem;">
+                <p>Discount</p>
+                <p id="discount">100</p>
+              </div>
+              
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                  Complimentary
+                </label>
+              </div>
+              
+              <div class="d-flex justify-content-between w-100" style=" font-weight: 700;height: 1.8rem;">
+                <p>Total Payment</p>
+                <p id="Total-payment"> </p>
+              </div>
+              <div class="buttons d-flex justify-content-around" >
+                <button type="button" id="save" class="btn btn-light px-4" style="font-weight: bold;">Save</button>
+                <button type="button" class="btn btn-light px-4" style="font-weight: bold;">Pay</button>
+                <button type="button" class="btn btn-light px-2" style="font-weight: bold;">Pay Later</button>
+              </div>
+               </div>
+               </form>
+
+          </div>
+          
+        </div>
+
       </div>
       <div class="tab-pane fade " id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
-        <h1>Ongoing Orders</h1>
-        <form class="d-flex" role="search">
+        <div class="ongoing-orders-page d-flex flex-row w-100" style=" margin-top: 2rem;">
+          <div class="ongoing-orders-cards rounded-2 py-3"  style="background-color: #EEF5FF;width:100%;">
+        <h1 class="px-4" style="font-weight: bold;">Ongoing Orders</h1>
+        <form class="d-flex px-2" role="search">
           <div class="search mt-2 position-relative" style="width: 35%;">
             <input class="form-control me-2  py-1 ps-5 pe-2" type="search" placeholder="Search" aria-label="Search"
               style="width:100%;">
@@ -72,43 +158,126 @@
 
 
         <div class="container mt-1">
-          <ul class="nav nav-underline " id="myTab" role="tablist" style="font-weight: bold;">
-            <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="section1-tab" data-bs-toggle="tab" data-bs-target="#section1" type="button" 
-              role="tab" aria-controls="section1" aria-selected="true">All</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="section2-tab" data-bs-toggle="tab" data-bs-target="#section2" type="button"
-                role="tab" aria-controls="section2" aria-selected="false">Dine in</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="section3-tab" data-bs-toggle="tab" data-bs-target="#section3" type="button"
-                role="tab" aria-controls="section3" aria-selected="false" >To go</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="section3-tab" data-bs-toggle="tab" data-bs-target="#section3" type="button"
-                role="tab" aria-controls="section3" aria-selected="false">Delivery</button>
-            </li>
+          <ul class="nav nav-underline" id="myTab" role="tablist" style="font-weight: bold;">
+              <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="section1-tab" data-bs-toggle="tab" data-bs-target="#section1" type="button"
+                      role="tab" aria-controls="section1" aria-selected="true">All</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="section2-tab" data-bs-toggle="tab" data-bs-target="#section2" type="button"
+                      role="tab" aria-controls="section2" aria-selected="false">Dine in</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="section3-tab" data-bs-toggle="tab" data-bs-target="#section3" type="button"
+                      role="tab" aria-controls="section3" aria-selected="false">To go</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="section4-tab" data-bs-toggle="tab" data-bs-target="#section4" type="button"
+                      role="tab" aria-controls="section4" aria-selected="false">Delivery</button>
+              </li>
           </ul>
-          
           <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active mt-3" id="section1" role="tabpanel" aria-labelledby="section1-tab">
-              <h3>Section 1 Content</h3>
-              <div id="cards-container"></div>
-              
+              <div class="tab-pane fade show active mt-3" id="section1" role="tabpanel" aria-labelledby="section1-tab">
+                  <div id="cards-container-all" class="d-flex flex-wrap "></div>
+              </div>
               <div class="tab-pane fade" id="section2" role="tabpanel" aria-labelledby="section2-tab">
-                <h3>Section 2 Content</h3>
-                <p>This is the content for Section 2.</p>
+                  <div id="cards-container-Dine-in" class="d-flex flex-wrap"></div>
               </div>
               <div class="tab-pane fade" id="section3" role="tabpanel" aria-labelledby="section3-tab">
-                <h3>Section 3 Content</h3>
-                <p>This is the content for Section 3.</p>
+                  <div id="cards-container-To-Go" class="d-flex flex-wrap"></div>
               </div>
-            </div>
+              <div class="tab-pane fade" id="section4" role="tabpanel" aria-labelledby="section4-tab">
+                  <div id="cards-container-Delivery" class="d-flex flex-wrap"></div>
+              </div>
           </div>
+      </div>
+    </div>
 
+    <div class="order-form py-2 px-2 rounded-3 mx-1 shadow-sm" style="width: 35rem; ">
+      <form action="">
+        <select id="select2" class="select-table bg-primary text-light p-2 rounded-2 mb-1" style="height: 2.5rem; width: 98%; margin-left: 0.2rem; font-weight: bold; cursor: pointer;">
+          <option class="table-option mb-3 text-black bg-light" style="font-weight: 500;" value="Table-No">Table No</option>
+          <option class="table-option mb-3 text-black bg-light" style="font-weight: 500;" value="Table-1">Table No.1</option>
+          <option class="table-option mb-3 text-black bg-light" style="font-weight: 500;" value="Table-2">Table No.2</option>
+          <option class="table-option mb-3 text-black bg-light" style="font-weight: 500;" value="Table-3">Table No.3</option>
+        </select>
+        <input id="ongoingorder-nameInput" class=" border-0 shadow-sm mb-1 rounded-3 ms-2 p-1 px-2" style="width: 97%; font-weight: 700;background-color: #EEF5FF;" type="text" placeholder="Name:"/>
+        <ul class="nav nav-tabs mt-1 border-0" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button  class="nav-link active" id="dinein" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Dine</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="togo" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">To Go</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="delivery" data-bs-toggle="tab" data-bs-target="#messages" type="button" role="tab" aria-controls="messages" aria-selected="false">Delivery</button>
+          </li>
+        </ul>
+     
+      <div class="order-bill-container">
+        <div class="ongoing-order-header d-flex justify-content-between">
+          <div class="ongoing-order-item">Item</div>
+          <div class="ongoing-order-quantity " style="width: 6rem;">Qty</div>
+
+          <div class="ongoing-order-price">Price</div>
 
         </div>
+        
+        <div id="ongoing-order-body" class="order-body" style="height: calc(38vh - 40px); overflow-y: auto;"></div>
+        <div class="cooking note">
+          <input class="note border-0 mt-2 rounded-2" type="text" value="" id="note" placeholder="Add cooking instructions(note)" style=" width: 90%;border-bottom: 2px gray;">
+        </div>
+        <div id="" class="total bg-dark-subtle mt-1 py-2 px-3 rounded-2">
+          <div class="SubTotal d-flex justify-content-between w-100 " style="height: 1.8rem;font-weight: 500;">
+            <p>Sub Total</p>
+            <p id="ongoing-total-price"></p>
+          </div>
+          <div class="d-flex justify-content-between w-100" style="font-weight: 500;height: 1.8rem;">
+            <p>Discount</p>
+            <p id="discount">100</p>
+          </div>
+          
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+            <label class="form-check-label" for="flexCheckDefault">
+              Complimentary
+            </label>
+          </div>
+          
+          <div class="d-flex justify-content-between w-100" style=" font-weight: 700;height: 1.8rem;">
+            <p>Total Payment</p>
+            <p id="ongoing-Total-payment"> </p>
+          </div>
+        <div class="buttons d-flex justify-content-around" >
+          <button type="button" id="cancel-button" class="btn btn-light px-3" style="font-weight: bold;">Cancel</button>
+          <button type="button" id="add-items-button" class=" btn btn-light px-2 " style="font-weight: bold;">Add items</button>
+          <button type="button" id="pay-button" class="btn btn-light px-4" style="font-weight: bold;">Pay</button>
+        </div>
+      </div>
+
+      </form>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
       </div>
 
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

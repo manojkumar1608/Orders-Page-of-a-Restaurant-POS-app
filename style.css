@@ -8,7 +8,7 @@
   background-color:#42ab49 !important;
   color: white !important;
 }
-/*  */
+/*  ******** */
 
 
 /* / ongoing orders page tabs(All,DineIn,Togo,Delivery) styling / */
@@ -22,7 +22,10 @@
   color: black !important;
   border-bottom: 0.2rem solid orange;
 }
+/* ******** */
 
+
+/* menu card Styling */
 .card-price{
   color: #4C3BCF !important;
   font-weight: bold !important;
@@ -31,3 +34,80 @@
 .custom-card{
 padding:0 !important;
 }
+/* ******** */
+
+
+/* order type tabs (Dine in , ToGo Delivery)  */
+
+.nav-tabs .nav-item .nav-link {
+  background-color: lightgray; /* Inactive tab background color */
+  color: #fff; /* Text color */ 
+  font-weight: semibold; 
+  margin-right:1.5rem;
+  border-radius: 0.5rem;
+}
+
+.nav-tabs .nav-item .nav-link.active {
+  background-color: #42ab49 !important; /* Active tab background color */
+  font-weight: bold; 
+}
+
+/* ********* */
+
+
+/* Bill card styling */
+
+.order-header, .order-row, .ongoing-order-row, .ongoing-order-header {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr auto; /* Adjusted widths */
+  align-items: center;
+  padding: 5px;
+}
+
+.order-item, .order-quantity, .order-price, .order-actions, .order-price-name {
+  text-align: start;
+  font-weight: bold;
+}
+.ongoing-order-item, .ongoing-order-quantity, .ongoing-order-price, .ongoing-order-actions, .ongoing-order-price-name {
+  text-align: center;
+  font-weight: bold;
+}
+
+.order-quantity {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1rem;
+  padding: 0 !important;
+}
+
+.order-quantity button {
+  margin: 0 2px;
+}
+
+.order-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bi-trash {
+  font-size: 1.5rem; /* Adjust the size as needed */
+  cursor: pointer;
+}
+.price{
+  margin-bottom: 0 !important;
+}
+
+.btn-light{
+  color: gray ;
+  background-color: #F6F5F5 ;
+}
+.btn-light:hover{
+  color: white !important;
+  background-color: #0d6efd !important;
+}
+
+/* ******************** */
+
+/* <button type="button" class="btn  bg-primary px-3 " style="padding-top:0.4rem;padding-bottom:0.4rem; font-weight: bold; color:white;">Pay</button> */
