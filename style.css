@@ -59,7 +59,7 @@ padding:0 !important;
 
 .order-header, .order-row, .ongoing-order-row, .ongoing-order-header {
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr auto; /* Adjusted widths */
+  grid-template-columns: 1.5fr 1fr 1fr auto; 
   align-items: center;
   padding: 5px;
 }
@@ -92,7 +92,7 @@ padding:0 !important;
 }
 
 .bi-trash {
-  font-size: 1.5rem; /* Adjust the size as needed */
+  font-size: 1.5rem; 
   cursor: pointer;
 }
 .price{
@@ -108,6 +108,4 @@ padding:0 !important;
   background-color: #0d6efd !important;
 }
 
-/* ******************** */
 
-/* <button type="button" class="btn  bg-primary px-3 " style="padding-top:0.4rem;padding-bottom:0.4rem; font-weight: bold; color:white;">Pay</button> */

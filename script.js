@@ -408,7 +408,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       return `
         <div class="ongoingorder-cards me-3 mb-3" data-order-index="${index}" data-order='${JSON.stringify(order)}'>
-          <div class="table bg-light-subtle mt-2 rounded-3 pt-3 px-3" style="width:23rem; margin-bottom: 0;">
+          <div class="table bg-light-subtle mt-1 rounded-3 pt-3 px-3" style="width:23rem; margin-bottom: 0;">
             <div class="tableno d-flex justify-content-between w-100" style="height: 1.8rem;font-weight: 600;">
               <p>${order.table}</p>
               <p id="orderid">#1234</p>
@@ -743,7 +743,7 @@ document.addEventListener("DOMContentLoaded", function () {
         backgroundColor = "bg-warning-subtle";
       }
       return `
-             <div class="ongoingorder-cards me-3 mb-3" data-order-index="${index}" data-order='${JSON.stringify(order)}'>
+             <div class="ongoingorder-cards me-3 mb-3" data-order-index="${index}" data-order='${JSON.stringify(order)}' overflow-y-auto style ="height: calc(100vh - 100px)";>
         <div class="table bg-light-subtle mt-2 rounded-3 pt-3 px-3" style="width:23rem; margin-bottom: 0;">
           <div class="tableno d-flex justify-content-between w-100" style="height: 1.8rem;font-weight: 600;">
             <p>${order.table}</p>

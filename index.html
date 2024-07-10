@@ -50,11 +50,11 @@
       style="height: calc(100vh - 2.9rem); width: 3.2rem;">
       <div class="logo">
         <img class="img mt-" style="height: 2rem; width: 2rem;"
-          src="https://cdn.pixabay.com/photo/2014/04/02/16/23/coffee-307147_1280.png" />
+          src="https://addbadge.com/wp-content/uploads/2020/07/choose-offer.png" />
       </div>
       <div class="profile">
-        <img class="img" style="height: 2rem; width: 2rem;"
-          src="https://cdn.pixabay.com/photo/2014/04/02/16/23/coffee-307147_1280.png" />
+        <img class="img" style="height: 2rem; width: 2rem; margin-bottom: 4rem;"
+          src="https://th.bing.com/th/id/OIP.AGwbPd_PdaOKQQmrgmlIGwHaHa?w=198&h=198&c=7&r=0&o=5&dpr=1.5&pid=1.7" />
       </div>
 
       <!-- Add any additional sidebar content here -->
@@ -68,7 +68,7 @@
         <div class="order-container d-flex flex-row w-100" style="margin-top: 2rem;">
 
           <div class="menu-page bg-primar rounded-3 py-3 px-4 me-2"  style="width:63%;background-color: #EEF5FF;">
-            <h1 class="w-50">Order</h1> <h2 class="mx-5 bg-danger-subtle rounded-2 px-3" style="font-size: small;">important : click on items to select and click "Save" to show order cards in ongoing-orders page. we can also selcet table no, orderType and mention name"</h2>
+            <h1 class="w-50">Order</h1> <h2 class="bg-danger-subtle rounded-2 px-2" style="font-size: small;">important : click on items to select and click "Save" to show order cards in ongoing-orders page. we can also selcet table no, orderType and mention name"</h2>
             <form class="d-flex" role="search">
               <div class="search mb-2 position-relative" style="width: 55%;">
                 <input class="form-control me-2  py-1 ps-5 pe-2" type="search" placeholder="Search" aria-label="Search"
@@ -92,7 +92,7 @@
               </select>
               <input id="order-nameInput" class=" border-0  shadow-sm mb-1 rounded-3 ms-2 p-1 px-2" style="width: 97%; font-weight: 700; background-color: #EEF5FF;" type="text" placeholder="Name:"/>
               <ul class="nav nav-tabs mt-1 border-0" id="myTab" role="tablist">
-                <li class="nav-item" role="presentation">
+                <li class="nav-item mb-2" role="presentation">
                   <button class="nav-link active" id="order-dine-in" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Dine</button>
                 </li>
                 <li class="nav-item" role="presentation">
@@ -189,7 +189,7 @@
           </ul>
           <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active mt-3" id="section1" role="tabpanel" aria-labelledby="section1-tab">
-                  <div id="cards-container-all" class="d-flex flex-wrap ">
+                  <div id="cards-container-all" class="d-flex flex-wrap overflow-y-auto" style="height: calc(100vh - 200px)">
                   </div>
               </div>
               <div class="tab-pane fade" id="section2" role="tabpanel" aria-labelledby="section2-tab">
