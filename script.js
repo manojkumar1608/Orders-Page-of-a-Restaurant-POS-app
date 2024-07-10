@@ -602,7 +602,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }})
 
     const dinetab = document.getElementById('cards-container-Dine-in')
-    const dineorders = orders.filter(order => order.orderType === 'Dine')
+    const dineorders = orders.filter(order => order.orderType === 'Dine In')
 
     const dinecardsHtml = dineorders.map((order, index) => {
       let borderColor, textColor, backgroundColor;
