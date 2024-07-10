@@ -407,7 +407,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
       return `
-        <div class="ongoingorder-cards me-3 mb-3" data-order-index="${index}" data-order='${JSON.stringify(order)}'>
+        <div class="ongoingorder-cards me-3 mb-3" data-order-index="${index}" data-order='${JSON.stringify(order)}' style="height:11.2rem ;cursor:pointer;">
           <div class="table bg-light-subtle mt-1 rounded-3 pt-3 px-3" style="width:23rem; margin-bottom: 0;">
             <div class="tableno d-flex justify-content-between w-100" style="height: 1.8rem;font-weight: 600;">
               <p>${order.table}</p>
@@ -620,7 +620,7 @@ document.addEventListener("DOMContentLoaded", function () {
         backgroundColor = "bg-warning-subtle";
       }
       return `
-               <div class="ongoingorder-cards me-3 mb-3" data-order-index="${index}" data-order='${JSON.stringify(order)}'>
+               <div class="ongoingorder-cards me-3 mb-3" data-order-index="${index}" data-order='${JSON.stringify(order)}' style="height:11.2rem ;cursor:pointer;">
           <div class="table bg-light-subtle mt-2 rounded-3 pt-3 px-3" style="width:23rem; margin-bottom: 0;">
             <div class="tableno d-flex justify-content-between w-100" style="height: 1.8rem;font-weight: 600;">
               <p>${order.table}</p>
@@ -682,7 +682,7 @@ document.addEventListener("DOMContentLoaded", function () {
         backgroundColor = "bg-warning-subtle";
       }
       return `
-               <div class="ongoingorder-cards me-3 mb-3" data-order-index="${index}" data-order='${JSON.stringify(order)}'>
+               <div class="ongoingorder-cards me-3 mb-3" data-order-index="${index}" data-order='${JSON.stringify(order)}' style="height:11.2rem ;cursor:pointer;">
           <div class="table bg-light-subtle mt-2 rounded-3 pt-3 px-3" style="width:23rem; margin-bottom: 0;">
             <div class="tableno d-flex justify-content-between w-100" style="height: 1.8rem;font-weight: 600;">
               <p>${order.table}</p>
@@ -743,7 +743,7 @@ document.addEventListener("DOMContentLoaded", function () {
         backgroundColor = "bg-warning-subtle";
       }
       return `
-             <div class="ongoingorder-cards me-3 mb-3" data-order-index="${index}" data-order='${JSON.stringify(order)}' overflow-y-auto style ="height: calc(100vh - 100px)";>
+             <div class="ongoingorder-cards me-3 mb-3" data-order-index="${index}" data-order='${JSON.stringify(order)}' style="height:11.2rem ;cursor:pointer;";>
         <div class="table bg-light-subtle mt-2 rounded-3 pt-3 px-3" style="width:23rem; margin-bottom: 0;">
           <div class="tableno d-flex justify-content-between w-100" style="height: 1.8rem;font-weight: 600;">
             <p>${order.table}</p>
@@ -795,13 +795,12 @@ document.addEventListener("DOMContentLoaded", function () {
   function populateForm(order) {
     document.getElementById('select2').value = order.table || "";
     document.getElementById('ongoingorder-nameInput').value = order.name;
-    // Set the correct tab based on orderType
     document.getElementById('dinein').classList.toggle('active', order.orderType === "Dine In");
     document.getElementById('togo').classList.toggle('active', order.orderType === "To Go");
     document.getElementById('delivery').classList.toggle('active', order.orderType === "Delivery");
 
     const ongoingOrderBody = document.getElementById('ongoing-order-body');
-    ongoingOrderBody.innerHTML = ''; // Clear previous items
+    ongoingOrderBody.innerHTML = ''; // Clears previous items
 
     order.items.forEach(item => {
 
