@@ -172,7 +172,7 @@ function menucard() {
       // Loop through items in the order to add them to the order management page
       document.getElementById('order-select1').value = order.table || "";
       document.getElementById('order-nameInput').value = order.name || "";
-      document.getElementById('order-dine-in').classList.toggle('active', order.orderType === "Dine");
+      document.getElementById('order-dine-in').classList.toggle('active', order.orderType === "Dine In");
       document.getElementById('order-togo').classList.toggle('active', order.orderType === "To Go");
       document.getElementById('order-delivery').classList.toggle('active', order.orderType === "Delivery");
       updateTotalPrice();
@@ -391,7 +391,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const cardContainer = document.getElementById('cards-container-all');
     const cardsHTML = orders.map((order, index) => {
       let borderColor, textColor, backgroundColor;
-      if (order.orderType === "Dine") {
+      if (order.orderType === "Dine In") {
         borderColor = "lightgreen";
         textColor = "text-success";
         backgroundColor = "bg-success-subtle";
@@ -606,7 +606,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const dinecardsHtml = dineorders.map((order, index) => {
       let borderColor, textColor, backgroundColor;
-      if (order.orderType === "Dine") {
+      if (order.orderType === "Dine In") {
         borderColor = "lightgreen";
         textColor = "text-success";
         backgroundColor = "bg-success-subtle";
@@ -668,7 +668,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const togoCardHtml = togoOrders.map((order, index) => {
       let borderColor, textColor, backgroundColor;
-      if (order.orderType === "Dine") {
+      if (order.orderType === "Dine In") {
         borderColor = "lightgreen";
         textColor = "text-success";
         backgroundColor = "bg-success-subtle";
@@ -729,7 +729,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const deliveryCardHtml = deliveryOrders.map((order, index) => {
       let borderColor, textColor, backgroundColor;
-      if (order.orderType === "Dine") {
+      if (order.orderType === "Dine In") {
         borderColor = "lightgreen";
         textColor = "text-success";
         backgroundColor = "bg-success-subtle";
@@ -796,7 +796,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('select2').value = order.table || "";
     document.getElementById('ongoingorder-nameInput').value = order.name;
     // Set the correct tab based on orderType
-    document.getElementById('dinein').classList.toggle('active', order.orderType === "Dine");
+    document.getElementById('dinein').classList.toggle('active', order.orderType === "Dine In");
     document.getElementById('togo').classList.toggle('active', order.orderType === "To Go");
     document.getElementById('delivery').classList.toggle('active', order.orderType === "Delivery");
 
