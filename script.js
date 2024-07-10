@@ -34,7 +34,7 @@ function menucard() {
 
   // Generate the HTML for all cards
   const cardsHTML = menu.map(item => `
-                <div class="card custom-card custom-margin m-2 d-flex rounded-4 p-1" style="height: 13.6rem; width: 13rem;" data-name="${item.name}" data-price="${item.price}">
+                <div class="card custom-card custom-margin m-2 d-flex rounded-4 p-1 " style="height: 13.6rem; width: 13rem;" data-name="${item.name}" data-price="${item.price}">
                     <img src="${item.imageUrl}" class="card-img-top mx-auto mt-1" alt="${item.name}" style="width: 7rem; height: 7rem;">
                     <div class="card-body d-flex flex-column align-items-center">
                         <h6 class="card-title">${item.name}</h6>

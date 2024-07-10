@@ -10,6 +10,10 @@
 }
 /*  ******** */
 
+.card.custom-card.custom-margin.m-2.d-flex.rounded-4.p-1:hover {
+  opacity: 0.7; 
+  cursor: pointer;
+}
 
 /* / ongoing orders page tabs(All,DineIn,Togo,Delivery) styling / */
 .nav-underline .nav-link{ 
