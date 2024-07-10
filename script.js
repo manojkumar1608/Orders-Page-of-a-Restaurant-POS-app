@@ -357,7 +357,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const tableSelect = document.getElementById('order-select1');
     const nameInput = document.getElementById('order-nameInput');
 
-    tableSelect.value = '';
+    tableSelect.value = 'Table-No';
     if (nameInput) {
       nameInput.value = '';
     }
@@ -369,7 +369,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const tableSelect = document.getElementById('select2');
     const nameInput = document.getElementById('ongoingorder-nameInput');
 
-    tableSelect.value = '';
+    tableSelect.value = 'Table-No';
     if (nameInput) {
       nameInput.value = '';
     }
