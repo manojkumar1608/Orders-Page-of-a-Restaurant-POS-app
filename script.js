@@ -11,7 +11,23 @@ const menu = [
   { name: 'Blue Cocktail', price: 60, imageUrl: 'https://envato-shoebox-0.imgix.net/4204/24ea-634a-11e2-952c-842b2b692e1a/Blue+cocktail+in+a+big+glass.jpg?auto=compress%2Cformat&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark2.png&w=600&fit=max&markalign=center%2Cmiddle&markalpha=18&s=e88d28564e7241b04c9b148b6b1912a9' },
   { name: 'Water Bottle', price: 20, imageUrl: 'https://th.bing.com/th?id=OIP.HMRnN2phEFDzu3E63GwsjgHaH-&w=240&h=259&c=8&rs=1&qlt=90&o=6&dpr=1.5&pid=3.1&rm=2' },
 ];
-
+function showCustomAlert({ title = "Info", text = "An example alert with an icon", icon = "info" }) {
+  swal({
+      title: title,
+      text: text,
+      icon: icon,
+      buttons: {
+          confirm: {
+              text: "OK",
+              value: true,
+              visible: true,
+              className: "btn btn-primary",
+              closeModal: true
+          }
+      },
+      dangerMode: false // Set to false by default to avoid emphasizing danger unless specified
+  });
+}
 function menucard() {
   // Get the card container
   const cardContainer = document.querySelector('#menucards-container');
@@ -131,7 +147,7 @@ function menucard() {
   let Payment = 0;
   function updateTotalPayment() {
     const Subtotal = document.querySelector('#total-price')
-    const discount = document.querySelector('#discount')
+    const discount = document.querySelector('#order-discount')
     Payment = 0
     Payment = parseFloat(Subtotal.textContent) - parseFloat(discount.textContent);
     const totalPayment = document.querySelector('#Total-payment')
@@ -141,34 +157,34 @@ function menucard() {
 
 
 
-// Function to handle adding items to an existing order after navigation
-function handleAddItemsAfterNavigation() {
-  // Parse the order index from the URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const orderIndex = urlParams.get('orderIndex');
-  
-  // Example: Fetch order details from storage or database based on orderIndex
-  const storedOrders = JSON.parse(getCookie('orders') || "[]");
- // Example of getting orders from localStorage
+  // Function to handle adding items to an existing order after navigation
+  function handleAddItemsAfterNavigation() {
+    // Parse the order index from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderIndex = urlParams.get('orderIndex');
 
-  if (storedOrders && storedOrders[orderIndex]) {
-    const order = storedOrders[orderIndex];
-    // Loop through items in the order to add them to the order management page
-    document.getElementById('order-select1').value = order.table || "";
-    document.getElementById('order-nameInput').value = order.name || "";
-    document.getElementById('order-dine-in').classList.toggle('active', order.orderType === "Dine");
-    document.getElementById('order-togo').classList.toggle('active', order.orderType === "To Go");
-    document.getElementById('order-delivery').classList.toggle('active', order.orderType === "Delivery");
-    updateTotalPrice();
-    updateTotalPayment();
-  } else {
-    // console.error(`Order with index ${orderIndex} not found.`);
-    null
+    // Example: Fetch order details from storage or database based on orderIndex
+    const storedOrders = JSON.parse(getCookie('orders') || "[]");
+    // Example of getting orders from localStorage
+
+    if (storedOrders && storedOrders[orderIndex]) {
+      const order = storedOrders[orderIndex];
+      // Loop through items in the order to add them to the order management page
+      document.getElementById('order-select1').value = order.table || "";
+      document.getElementById('order-nameInput').value = order.name || "";
+      document.getElementById('order-dine-in').classList.toggle('active', order.orderType === "Dine");
+      document.getElementById('order-togo').classList.toggle('active', order.orderType === "To Go");
+      document.getElementById('order-delivery').classList.toggle('active', order.orderType === "Delivery");
+      updateTotalPrice();
+      updateTotalPayment();
+    } else {
+      // console.error(`Order with index ${orderIndex} not found.`);
+      null
+    }
   }
-}
 
-// Call the function to handle adding items after navigation
-handleAddItemsAfterNavigation();
+  // Call the function to handle adding items after navigation
+  handleAddItemsAfterNavigation();
 
 
   // Function to get current time in hh:mm format
@@ -237,64 +253,74 @@ document.addEventListener("DOMContentLoaded", function () {
     return null;
   }
 
-
+  
   function storeFormData(event) {
-    event.preventDefault(); 
+    event.preventDefault();
     const orderBody = document.getElementById('order-body')
     const orderItems = orderBody.querySelectorAll('.order-row')
-    if(orderItems.length > 0){
-  
-    const tableSelect = document.getElementById('order-select1');
-    const nameInput = document.getElementById('order-nameInput');
-    const orderTypeTabs = document.querySelector('.nav-tabs .nav-link.active');
-    const totalPayment = document.getElementById('Total-payment').textContent;
-  
-    const table = tableSelect.value;
-    const name = nameInput ? nameInput.value : "" ;
-    const orderType = orderTypeTabs.textContent;
-  
-    const orderBodyData = Array.from(document.querySelectorAll('#order-body .order-item')).map((item, index) => {
-      const amount = document.querySelectorAll('#order-body .price')[index].textContent.replace('Amount ', '');
-      const qty = document.querySelectorAll('#order-body .qty')[index].textContent;
-      const price = document.querySelectorAll('#order-body .order-price')[index].textContent;
-      return {
-        name: item.textContent,
-        amount: parseFloat(amount),
-        qty: parseInt(qty, 10),
-        price: parseFloat(price)
-      };
-    });
-  
-    // Filter out empty items
-    const filteredOrderBodyData = orderBodyData.filter(item => item.name || item.amount || item.qty || item.price);
-  
-    // Retrieve existing orders from cookies
-    let orders = JSON.parse(getCookie('orders') || "[]");
-    console.log(orders);
-  
-    // Check if there are existing orders for merging
-    if (orders.length > 0) {
-      // Find the index of the existing order, if any
-      const existingOrderIndex = orders.findIndex(order => order.table === table && order.name === name && order.orderType === orderType);
-  
-      if (existingOrderIndex !== -1) {
-        // Merging new items into the existing order
-        filteredOrderBodyData.forEach(newItem => {
-          const existingItemIndex = orders[existingOrderIndex].items.findIndex(item => item.name === newItem.name);
-          if (existingItemIndex !== -1) {
-            // Updating quantity and amount of existing item
-            orders[existingOrderIndex].items[existingItemIndex].qty += newItem.qty;
-            orders[existingOrderIndex].items[existingItemIndex].amount += newItem.amount;
-            orders[existingOrderIndex].items[existingItemIndex].price += newItem.price;
-          } else {
-            // Adding new item if it doesn't exist
-            orders[existingOrderIndex].items.push(newItem);
-          }
-        });
-        // Update total payment
-        orders[existingOrderIndex].totalPayment = parseFloat(orders[existingOrderIndex].totalPayment) + parseFloat(totalPayment);
+    if (orderItems.length > 0) {
+
+      const tableSelect = document.getElementById('order-select1');
+      const nameInput = document.getElementById('order-nameInput');
+      const orderTypeTabs = document.querySelector('.nav-tabs .nav-link.active');
+      const totalPayment = document.getElementById('Total-payment').textContent;
+
+      const table = tableSelect.value;
+      const name = nameInput ? nameInput.value : "";
+      const orderType = orderTypeTabs.textContent;
+
+      const orderBodyData = Array.from(document.querySelectorAll('#order-body .order-item')).map((item, index) => {
+        const amount = document.querySelectorAll('#order-body .price')[index].textContent.replace('Amount ', '');
+        const qty = document.querySelectorAll('#order-body .qty')[index].textContent;
+        const price = document.querySelectorAll('#order-body .order-price')[index].textContent;
+        return {
+          name: item.textContent,
+          amount: parseFloat(amount),
+          qty: parseInt(qty, 10),
+          price: parseFloat(price)
+        };
+      });
+
+      // Filter out empty items
+      const filteredOrderBodyData = orderBodyData.filter(item => item.name || item.amount || item.qty || item.price);
+
+      // Retrieve existing orders from cookies
+      let orders = JSON.parse(getCookie('orders') || "[]");
+      console.log(orders);
+
+      // Check if there are existing orders for merging
+      if (orders.length > 0) {
+        // Find the index of the existing order, if any
+        const existingOrderIndex = orders.findIndex(order => order.table === table && order.name === name && order.orderType === orderType);
+
+        if (existingOrderIndex !== -1) {
+          // Merging new items into the existing order
+          filteredOrderBodyData.forEach(newItem => {
+            const existingItemIndex = orders[existingOrderIndex].items.findIndex(item => item.name === newItem.name);
+            if (existingItemIndex !== -1) {
+              // Updating quantity and amount of existing item
+              orders[existingOrderIndex].items[existingItemIndex].qty += newItem.qty;
+              orders[existingOrderIndex].items[existingItemIndex].amount += newItem.amount;
+              orders[existingOrderIndex].items[existingItemIndex].price += newItem.price;
+            } else {
+              // Adding new item if it doesn't exist
+              orders[existingOrderIndex].items.push(newItem);
+            }
+          });
+          // Update total payment
+          orders[existingOrderIndex].totalPayment = parseFloat(orders[existingOrderIndex].totalPayment) + parseFloat(totalPayment);
+        } else {
+          // Add a new order entry
+          orders.push({
+            table: table,
+            name: name,
+            orderType: orderType,
+            totalPayment: totalPayment,
+            items: filteredOrderBodyData
+          });
+        }
       } else {
-        // Add a new order entry
+        // If no existing orders, simply add the new order
         orders.push({
           table: table,
           name: name,
@@ -303,36 +329,34 @@ document.addEventListener("DOMContentLoaded", function () {
           items: filteredOrderBodyData
         });
       }
+
+      // Saving updated orders back to cookies
+      setCookie('orders', JSON.stringify(orders), 7);
+
+      clearFormFields();
+      clearURLParameters();
+      showCustomAlert({
+        title: "Success",
+        text: "Order Placed Successfully",
+        icon: "success"
+    });
+      cards();
     } else {
-      // If no existing orders, simply add the new order
-      orders.push({
-        table: table,
-        name: name,
-        orderType: orderType,
-        totalPayment: totalPayment,
-        items: filteredOrderBodyData
-      });
+      showCustomAlert({
+        title: "info",
+        text: "Select Items to place Order",
+        icon: "warning"
+    });
     }
-  
-    // Saving updated orders back to cookies
-    setCookie('orders', JSON.stringify(orders), 7);
-  
-    clearFormFields();
-    clearURLParameters();
-    alert('Order Successfully added! check Ongoing-Orders ');
-    cards(); 
-  }else{
-    alert('Select items to place order')
   }
-  }
-  
+
   document.getElementById('save').addEventListener('click', storeFormData);
-  
+
   // Function to clear form fields
   function clearFormFields() {
     const tableSelect = document.getElementById('order-select1');
     const nameInput = document.getElementById('order-nameInput');
-  
+
     tableSelect.value = '';
     if (nameInput) {
       nameInput.value = '';
@@ -340,14 +364,26 @@ document.addEventListener("DOMContentLoaded", function () {
     const orderBody = document.getElementById('order-body');
     orderBody.innerHTML = '';
   }
-  
-// Function to clear URL parameters 
-function clearURLParameters() {
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.has('orderIndex')) {
-      window.history.replaceState({}, document.title, window.location.pathname); // Clear URL parameters
+
+  function ongoingclearFormFields() {
+    const tableSelect = document.getElementById('select2');
+    const nameInput = document.getElementById('ongoingorder-nameInput');
+
+    tableSelect.value = '';
+    if (nameInput) {
+      nameInput.value = '';
+    }
+    const orderBody = document.getElementById('ongoing-order-body');
+    orderBody.innerHTML = '';
   }
-}
+
+  // Function to clear URL parameters 
+  function clearURLParameters() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('orderIndex')) {
+      window.history.replaceState({}, document.title, window.location.pathname); // Clear URL parameters
+    }
+  }
 
   function cards() {
     const orders = JSON.parse(getCookie('orders') || "[]");
@@ -356,21 +392,21 @@ function clearURLParameters() {
     const cardsHTML = orders.map((order, index) => {
       let borderColor, textColor, backgroundColor;
       if (order.orderType === "Dine") {
-          borderColor = "lightgreen";
-          textColor = "text-success";
-          backgroundColor = "bg-success-subtle";
+        borderColor = "lightgreen";
+        textColor = "text-success";
+        backgroundColor = "bg-success-subtle";
       } else if (order.orderType === "To Go") {
-          borderColor = "#ff0000";
-          textColor = "text-danger";
-          backgroundColor = "bg-danger-subtle";
+        borderColor = "#ff0000";
+        textColor = "text-danger";
+        backgroundColor = "bg-danger-subtle";
       } else if (order.orderType === "Delivery") {
-          borderColor = "#ff9f00";
-          textColor = "text-warning";
-          backgroundColor = "bg-warning-subtle";
+        borderColor = "#ff9f00";
+        textColor = "text-warning";
+        backgroundColor = "bg-warning-subtle";
       }
-  
 
-        return `
+
+      return `
         <div class="ongoingorder-cards me-3 mb-3" data-order-index="${index}" data-order='${JSON.stringify(order)}'>
           <div class="table bg-light-subtle mt-2 rounded-3 pt-3 px-3" style="width:23rem; margin-bottom: 0;">
             <div class="tableno d-flex justify-content-between w-100" style="height: 1.8rem;font-weight: 600;">
@@ -387,9 +423,9 @@ function clearURLParameters() {
                 <button type="button" class="btn btn-light mx-1" style="font-weight: bold;color:gray; background-color: #EEF5FF; padding-top:0.4rem;padding-bottom:0.4rem;">Pay later</button>
               </div>
               <div class="">
-                <i class="btn bi bi-x-lg px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
-                <i class="btn bi bi-printer px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
-                <i class="btn bi bi-pencil px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
+                <i class="cancel-icon btn btn bi bi-x-lg px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
+                <i class="print-btn btn bi bi-printer px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
+                <i class="edit-btn btn bi bi-pencil px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
               </div>
             </div>
           </div>
@@ -400,72 +436,190 @@ function clearURLParameters() {
         </div>
         `;
     }).join('');
-    
+
     cardContainer.innerHTML = cardsHTML;
+
 
     document.querySelectorAll('.ongoingorder-cards').forEach(card => {
       card.addEventListener('click', function () {
-          const order = JSON.parse(this.getAttribute('data-order'));
-          const orderIndex = this.getAttribute('data-order-index');
-          populateForm(order);
-          localStorage.setItem('currentOrderIndex', orderIndex);
+        const order = JSON.parse(this.getAttribute('data-order'));
+        const orderIndex = this.getAttribute('data-order-index');
+        populateForm(order);
+        localStorage.setItem('currentOrderIndex', orderIndex);
       });
     });
-    document.addEventListener('DOMContentLoaded', function() {
-      const AllTabAddItemsButton = document.getElementById('add-items-button');
-      
-      AllTabAddItemsButton.addEventListener('click', function() {
-       
-        // Check if the order body is empty
-        if (orderItems.length === 0) {
-          AllTabAddItemsButton.disabled = true;
-          console.log('No items in order body. Add Items button is disabled.');
-        } else {
-          AllTabAddItemsButton.disabled = false;
-          console.log('Current order index:', localStorage.getItem('currentOrderIndex'));
-        }
-      });
-    });
-    
-  
-    // Attach click event to the "Add items" button
-    const AllTabAddItemsButton = document.getElementById('add-items-button');
-    AllTabAddItemsButton.addEventListener('click', function() {
+
+    function addItemBtn() {
       const currentOrderIndex = localStorage.getItem('currentOrderIndex');
       const orderBody = document.querySelector('#ongoing-order-body'); // Adjust the selector to match your order body
       const orderItems = orderBody.querySelectorAll('.ongoing-order-row'); // Adjust the selector to match your order items
-  
-      if(orderItems.length > 0) {
+
+      if (orderItems.length > 0) {
+        if (currentOrderIndex !== null) {
+          // Navigate back to menu page to add items//
+          window.location.href = `menu.html?orderIndex=${currentOrderIndex}`;
+        } else {
+          console.log('No order selected');
+        }
+      } else {
+        showCustomAlert({
+          title: "info",
+          text: "Select an order to add items",
+          icon: "warning"
+      });
+      }
+    }
+    const AllTabAddItemsButton = document.getElementById('add-items-button');
+    AllTabAddItemsButton.addEventListener('click', addItemBtn)
+
+    document.addEventListener('click', function (event) {
+      if (event.target.closest('.edit-btn')) {
+        const currentOrderIndex = localStorage.getItem('currentOrderIndex');
+        const orderBody = document.querySelector('#ongoing-order-body'); // Adjust the selector to match your order body
+        const orderItems = orderBody.querySelectorAll('.ongoing-order-row'); // Adjust the selector to match your order items
+
+        if (orderItems.length > 0) {
+          if (currentOrderIndex !== null) {
+            // Navigate back to menu page to add items//
+            window.location.href = `menu.html?orderIndex=${currentOrderIndex}`;
+          } else {
+            console.log('No order selected');
+          }
+        } else {
+          showCustomAlert({
+            title: "info",
+            text: "Select an order to add items",
+            icon: "warning"
+        });
+        }
+      }
+    });
+
+      const cancelbtn = document.querySelector('#cancel-button');
+      cancelbtn.addEventListener('click', function () {
+      const currentOrderIndex = localStorage.getItem('currentOrderIndex');
+      const orderBody = document.querySelector('#ongoing-order-body'); // Adjust the selector to match your order body
+      const orderItems = orderBody.querySelectorAll('.ongoing-order-row'); // Adjust the selector to match your order items
+
+      if (orderItems.length === 0) {
+        console.log('ok')
+        return; // Exit the function if no items are selected
+      }
+
       if (currentOrderIndex !== null) {
-        // Navigate back to menu page to add items//
-        window.location.href = `menu.html?orderIndex=${currentOrderIndex}`;
+        cancelOrder(currentOrderIndex);
+        document.querySelector('#ongoing-total-price').innerHTML = '00';
+        document.querySelector('#ongoing-Total-payment').innerHTML = '00';
+        
+        
       } else {
         console.log('No order selected');
       }
-    }else{
-      alert(' Select an order to add items');
-    }
     });
+
+    document.addEventListener('click', function (event) {
+      if (event.target.closest('.cancel-icon')) {
+        const currentOrderIndex = localStorage.getItem('currentOrderIndex');
+        const orderBody = document.querySelector('#ongoing-order-body'); // Adjust the selector to match your order body
+        const orderItems = orderBody.querySelectorAll('.ongoing-order-row'); // Adjust the selector to match your order items
+
+        if (orderItems.length === 0) {
+          console.log('ok')
+          return; // Exit the function if no items are selected
+        }
+  
+        if (currentOrderIndex !== null) {
+          cancelOrder(currentOrderIndex);
+          
+        } else {
+          console.log('No order selected');
+        }
+      }
+    });
+
+    function cancelOrder(index) {
+      const orderBody = document.getElementById('ongoing-order-body');
+      orderBody.innerHTML = '';
+      let orders = JSON.parse(getCookie('orders') || "[]");
+      orders.splice(index, 1);
+      setCookie('orders', JSON.stringify(orders), 7);
+      cards();
+      ongoingclearFormFields()
+    }
+    
+    function paymentsuccess(){
+      const currentOrderIndex = localStorage.getItem('currentOrderIndex');
+      const orderBody = document.querySelector('#ongoing-order-body'); // Adjust the selector to match your order body
+      const orderItems = orderBody.querySelectorAll('.ongoing-order-row'); // Adjust the selector to match your order items
+
+      if (orderItems.length === 0) {
+        console.log('ok')
+        return; 
+      }
+
+      if (currentOrderIndex !== null) {
+        cancelOrder(currentOrderIndex);
+        document.querySelector('#ongoing-total-price').innerHTML = '00';
+        document.querySelector('#ongoing-Total-payment').innerHTML = '00';
+        
+      } else {
+        console.log('No order selected');
+      }
+      showCustomAlert({
+        title: "Payment Successful",
+        text: "",
+        icon: "success"
+    });
+    }
+    document.querySelector('#pay-button').addEventListener('click',paymentsuccess)
+
+    function orderpaymentsuccess() {
+      const orderBody = document.querySelector('#order-body');
+      const orderItems = orderBody.querySelectorAll('.order-row'); 
+
+      if (orderItems.length === 0) {
+        console.log('ok')
+        return; 
+      }else{
+        orderBody.innerHTML = '';
+      showCustomAlert({
+          title: "Payment Successfull",
+          text: "",
+          icon: "success"
+      });
+    }
+  }
+    document.querySelector('#orderPay-btn').addEventListener('click',orderpaymentsuccess)
+
+    
+    document.addEventListener('click', function (event) {
+      if (event.target.closest('.print-btn')) {
+        showCustomAlert({
+          title: "Print Successfull",
+          text: "",
+          icon: "success"
+      });
+      }})
 
     const dinetab = document.getElementById('cards-container-Dine-in')
     const dineorders = orders.filter(order => order.orderType === 'Dine')
 
-    const dinecardsHtml = dineorders.map((order,index) =>{ 
+    const dinecardsHtml = dineorders.map((order, index) => {
       let borderColor, textColor, backgroundColor;
-        if (order.orderType === "Dine") {
-            borderColor = "lightgreen";
-            textColor = "text-success";
-            backgroundColor = "bg-success-subtle";
-        } else if (order.orderType === "To Go") {
-            borderColor = "#ff0000";
-            textColor = "text-danger";
-            backgroundColor = "bg-danger-subtle";
-        } else if (order.orderType === "Delivery") {
-            borderColor = "#ff9f00";
-            textColor = "text-warning";
-            backgroundColor = "bg-warning-subtle";
-        }
-      return`
+      if (order.orderType === "Dine") {
+        borderColor = "lightgreen";
+        textColor = "text-success";
+        backgroundColor = "bg-success-subtle";
+      } else if (order.orderType === "To Go") {
+        borderColor = "#ff0000";
+        textColor = "text-danger";
+        backgroundColor = "bg-danger-subtle";
+      } else if (order.orderType === "Delivery") {
+        borderColor = "#ff9f00";
+        textColor = "text-warning";
+        backgroundColor = "bg-warning-subtle";
+      }
+      return `
                <div class="ongoingorder-cards me-3 mb-3" data-order-index="${index}" data-order='${JSON.stringify(order)}'>
           <div class="table bg-light-subtle mt-2 rounded-3 pt-3 px-3" style="width:23rem; margin-bottom: 0;">
             <div class="tableno d-flex justify-content-between w-100" style="height: 1.8rem;font-weight: 600;">
@@ -482,9 +636,9 @@ function clearURLParameters() {
                 <button type="button" class="btn btn-light mx-1" style="font-weight: bold;color:gray; background-color: #EEF5FF; padding-top:0.4rem;padding-bottom:0.4rem;">Pay later</button>
               </div>
               <div class="">
-                <i class="btn bi bi-x-lg px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
-                <i class="btn bi bi-printer px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
-                <i class="btn bi bi-pencil px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
+                <i class="cancel-icon btn bi bi-x-lg px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
+                <i class="print-btn btn bi bi-printer px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
+                <i class="edit-btn btn bi bi-pencil px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
               </div>
             </div>
           </div>
@@ -500,34 +654,34 @@ function clearURLParameters() {
 
     document.querySelectorAll('.ongoingorder-cards').forEach(card => {
       card.addEventListener('click', function () {
-          const order = JSON.parse(this.getAttribute('data-order'));
-          const orderIndex = this.getAttribute('data-order-index');
-          populateForm(order);
-          localStorage.setItem('currentOrderIndex', orderIndex);
+        const order = JSON.parse(this.getAttribute('data-order'));
+        const orderIndex = this.getAttribute('data-order-index');
+        populateForm(order);
+        localStorage.setItem('currentOrderIndex', orderIndex);
       });
     });
-  
-    
+
+
 
     const togotab = document.getElementById('cards-container-To-Go')
     const togoOrders = orders.filter(order => order.orderType === 'To Go')
 
-    const togoCardHtml = togoOrders.map((order,index) => {
+    const togoCardHtml = togoOrders.map((order, index) => {
       let borderColor, textColor, backgroundColor;
-        if (order.orderType === "Dine") {
-            borderColor = "lightgreen";
-            textColor = "text-success";
-            backgroundColor = "bg-success-subtle";
-        } else if (order.orderType === "To Go") {
-            borderColor = "#ff0000";
-            textColor = "text-danger";
-            backgroundColor = "bg-danger-subtle";
-        } else if (order.orderType === "Delivery") {
-            borderColor = "#ff9f00";
-            textColor = "text-warning";
-            backgroundColor = "bg-warning-subtle";
-        }
-      return`
+      if (order.orderType === "Dine") {
+        borderColor = "lightgreen";
+        textColor = "text-success";
+        backgroundColor = "bg-success-subtle";
+      } else if (order.orderType === "To Go") {
+        borderColor = "#ff0000";
+        textColor = "text-danger";
+        backgroundColor = "bg-danger-subtle";
+      } else if (order.orderType === "Delivery") {
+        borderColor = "#ff9f00";
+        textColor = "text-warning";
+        backgroundColor = "bg-warning-subtle";
+      }
+      return `
                <div class="ongoingorder-cards me-3 mb-3" data-order-index="${index}" data-order='${JSON.stringify(order)}'>
           <div class="table bg-light-subtle mt-2 rounded-3 pt-3 px-3" style="width:23rem; margin-bottom: 0;">
             <div class="tableno d-flex justify-content-between w-100" style="height: 1.8rem;font-weight: 600;">
@@ -536,7 +690,7 @@ function clearURLParameters() {
             </div>
             <div class="d-flex justify-content-between w-100" style="font-weight: 600;height: 1.8rem;">
               <p>Name:${order.name}</p>
-              <p id="taotalpayment">Rs${order.totalPayment}</p>
+              <p id="taotalpayment">Rs ${order.totalPayment}</p>
             </div>
             <div class="buttons d-flex justify-content-between px-1 py-2">
               <div class="buttons">
@@ -544,9 +698,9 @@ function clearURLParameters() {
                 <button type="button" class="btn btn-light mx-1" style="font-weight: bold;color:gray; background-color: #EEF5FF; padding-top:0.4rem;padding-bottom:0.4rem;">Pay later</button>
               </div>
               <div class="">
-                <i class="btn bi bi-x-lg px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
-                <i class="btn bi bi-printer px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
-                <i class="btn bi bi-pencil px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
+                <i class="cancel-icon btn bi bi-x-lg px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
+                <i class="print-btn btn bi bi-printer px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
+                <i class="edit-icon btn bi bi-pencil px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
               </div>
             </div>
           </div>
@@ -562,33 +716,33 @@ function clearURLParameters() {
 
     document.querySelectorAll('.ongoingorder-cards').forEach(card => {
       card.addEventListener('click', function () {
-          const order = JSON.parse(this.getAttribute('data-order'));
-          const orderIndex = this.getAttribute('data-order-index');
-          populateForm(order);
-          localStorage.setItem('currentOrderIndex', orderIndex);
+        const order = JSON.parse(this.getAttribute('data-order'));
+        const orderIndex = this.getAttribute('data-order-index');
+        populateForm(order);
+        localStorage.setItem('currentOrderIndex', orderIndex);
       });
     });
-  
-   
+
+
     const deliveryTab = document.getElementById('cards-container-Delivery')
     const deliveryOrders = orders.filter(order => order.orderType === 'Delivery')
 
-    const deliveryCardHtml = deliveryOrders.map((order,index) =>{
+    const deliveryCardHtml = deliveryOrders.map((order, index) => {
       let borderColor, textColor, backgroundColor;
       if (order.orderType === "Dine") {
-          borderColor = "lightgreen";
-          textColor = "text-success";
-          backgroundColor = "bg-success-subtle";
+        borderColor = "lightgreen";
+        textColor = "text-success";
+        backgroundColor = "bg-success-subtle";
       } else if (order.orderType === "To Go") {
-          borderColor = "#ff0000";
-          textColor = "text-danger";
-          backgroundColor = "bg-danger-subtle";
+        borderColor = "#ff0000";
+        textColor = "text-danger";
+        backgroundColor = "bg-danger-subtle";
       } else if (order.orderType === "Delivery") {
-          borderColor = "#ff9f00";
-          textColor = "text-warning";
-          backgroundColor = "bg-warning-subtle";
+        borderColor = "#ff9f00";
+        textColor = "text-warning";
+        backgroundColor = "bg-warning-subtle";
       }
-    return`
+      return `
              <div class="ongoingorder-cards me-3 mb-3" data-order-index="${index}" data-order='${JSON.stringify(order)}'>
         <div class="table bg-light-subtle mt-2 rounded-3 pt-3 px-3" style="width:23rem; margin-bottom: 0;">
           <div class="tableno d-flex justify-content-between w-100" style="height: 1.8rem;font-weight: 600;">
@@ -605,9 +759,9 @@ function clearURLParameters() {
               <button type="button" class="btn btn-light mx-1" style="font-weight: bold;color:gray; background-color: #EEF5FF; padding-top:0.4rem;padding-bottom:0.4rem;">Pay later</button>
             </div>
             <div class="">
-              <i class="btn bi bi-x-lg px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
-              <i class="btn bi bi-printer px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
-              <i class="btn bi bi-pencil px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
+              <i class="cancel-btn btn bi bi-x-lg px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
+              <i class="print-btn btn bi bi-printer px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
+              <i class="edit-btn btn bi bi-pencil px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
             </div>
           </div>
         </div>
@@ -617,47 +771,46 @@ function clearURLParameters() {
         </div>
       </div>
       `;
-  }).join('');
+    }).join('');
 
-  deliveryTab.innerHTML = deliveryCardHtml
+    deliveryTab.innerHTML = deliveryCardHtml
 
-   // Attach click event to each order card
-   document.querySelectorAll('.ongoingorder-cards').forEach(card => {
-    card.addEventListener('click', function () {
+    // Attach click event to each order card
+    document.querySelectorAll('.ongoingorder-cards').forEach(card => {
+      card.addEventListener('click', function () {
         const order = JSON.parse(this.getAttribute('data-order'));
         const orderIndex = this.getAttribute('data-order-index');
         populateForm(order);
         localStorage.setItem('currentOrderIndex', orderIndex);
+      });
     });
-  });
 
-  
-}
-cards();
+  }
+  cards();
 
 
 
 
 
   function populateForm(order) {
-    document.getElementById('select2').value = order.table;
+    document.getElementById('select2').value = order.table || "";
     document.getElementById('ongoingorder-nameInput').value = order.name;
     // Set the correct tab based on orderType
     document.getElementById('dinein').classList.toggle('active', order.orderType === "Dine");
     document.getElementById('togo').classList.toggle('active', order.orderType === "To Go");
     document.getElementById('delivery').classList.toggle('active', order.orderType === "Delivery");
-   
+
     const ongoingOrderBody = document.getElementById('ongoing-order-body');
     ongoingOrderBody.innerHTML = ''; // Clear previous items
 
     order.items.forEach(item => {
-        
-        // Creates a new row element
-        const row = document.createElement('div');
-        row.classList.add('ongoing-order-row', 'd-flex', 'justify-content-between', 'align-items-center', 'py-2');
 
-        // Set the inner HTML of the row
-        row.innerHTML = `
+      // Creates a new row element
+      const row = document.createElement('div');
+      row.classList.add('ongoing-order-row', 'd-flex', 'justify-content-between', 'align-items-center', 'py-2');
+
+      // Set the inner HTML of the row
+      row.innerHTML = `
             
                 <div class="d-flex flex-column" style="height: 2.5rem;">
                     <div class="ongoing-order-item" style="font-weight: 700; text-align: start;width:8rem;">${item.name}</div>
@@ -670,20 +823,23 @@ cards();
             <div id="ongoing-total-prices" class="ongoing-order-price" style="width: 6rem; text-align:end">${item.price}</div>
         `;
 
-        // Append the row to the ongoingOrderBody
-        ongoingOrderBody.appendChild(row);
-      });
-      let OngoingTotalPrice = 0;
-      const ongoingprice = document.getElementById('ongoing-total-price')
-      const ongoingTotalPayment = document.getElementById('ongoing-Total-payment')
-      const priceElements = document.querySelectorAll('#ongoing-total-prices');
-      console.log(priceElements)
-      OngoingTotalPrice = 0;
-      priceElements.forEach(priceElement => {
-        OngoingTotalPrice += parseFloat(priceElement.textContent);
-      });
-      ongoingprice.innerHTML += OngoingTotalPrice 
+      // Append the row to the ongoingOrderBody
+      ongoingOrderBody.appendChild(row);
+    });
+    let OngoingTotalPrice = 0;
+    const ongoingprice = document.getElementById('ongoing-total-price');
+    const priceElements = document.querySelectorAll('#ongoing-total-prices');
+    priceElements.forEach(priceElement => {
+      OngoingTotalPrice += parseFloat(priceElement.textContent);
+    });
+    let Payment = 0;
+    ongoingprice.innerHTML = `${OngoingTotalPrice.toFixed(2)}`;
+    const ongoingTotalPayment = document.getElementById('ongoing-Total-payment');
+    const Subtotal = document.querySelector('#ongoing-total-price')
+    const discount = document.querySelector('#ongoing-discount')
+    Payment = 0
+    Payment = parseFloat(Subtotal.textContent) - parseFloat(discount.textContent);
+    ongoingTotalPayment.textContent = `${Payment.toFixed(2)}`
 
-    }
-  });
- 
+  }
+});

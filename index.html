@@ -9,10 +9,18 @@
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link href="style.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
+  
 </head>
 
 <body>
+  <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+    <symbol id="info-fill" viewBox="0 0 16 16">
+        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+    </symbol>
+</svg>
+
+
   <nav class="navbar bg-light navbar-expand-lg position-fixed navbar-light z-1" style="height: 2.9rem; width: 100%; top: 0rem;left: 3rem">
     <div class="container-fluid ">
       <ul class="nav nav-pills" id="pills-tab " role="tablist" style="font-weight: bold;">
@@ -54,12 +62,13 @@
   </aside>
 
   <div class="content p-1 rounded-1" style="margin: 0.5rem 0rem 0rem 3rem;">
+    <div class="alert-1 z-2"></div>
     <div class="tab-content" id="pills-tabContent">
       <div class="tab-pane fade show active " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
         <div class="order-container d-flex flex-row w-100" style="margin-top: 2rem;">
 
           <div class="menu-page bg-primar rounded-3 py-3 px-4 me-2"  style="width:63%;background-color: #EEF5FF;">
-            <h1 class="w-50">Order</h1>
+            <h1 class="w-50">Order</h1> <h2 class="mx-5" style="font-size: small;">important : click on items to select and "Save" to show in order cards in ongoing-orders page"</h2>
             <form class="d-flex" role="search">
               <div class="search mb-2 position-relative" style="width: 55%;">
                 <input class="form-control me-2  py-1 ps-5 pe-2" type="search" placeholder="Search" aria-label="Search"
@@ -115,7 +124,7 @@
               </div>
               <div class="d-flex justify-content-between w-100" style="font-weight: 500;height: 1.8rem;">
                 <p>Discount</p>
-                <p id="discount">100</p>
+                <p id="order-discount">0</p>
               </div>
               
               <div class="form-check">
@@ -131,7 +140,7 @@
               </div>
               <div class="buttons d-flex justify-content-around" >
                 <button type="button" id="save" class="btn btn-light px-4" style="font-weight: bold;">Save</button>
-                <button type="button" class="btn btn-light px-4" style="font-weight: bold;">Pay</button>
+                <button type="button" id="orderPay-btn" class="btn btn-light px-4" style="font-weight: bold;">Pay</button>
                 <button type="button" class="btn btn-light px-2" style="font-weight: bold;">Pay Later</button>
               </div>
                </div>
@@ -144,44 +153,47 @@
       </div>
       <div class="tab-pane fade " id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
         <div class="ongoing-orders-page d-flex flex-row w-100" style=" margin-top: 2rem;">
-          <div class="ongoing-orders-cards rounded-2 py-3"  style="background-color: #EEF5FF;width:100%;">
-        <h1 class="px-4" style="font-weight: bold;">Ongoing Orders</h1>
+          <div class="ongoing-orders-cards rounded-2 py-2"  style="background-color: #EEF5FF;width:100%;">
+        <h1 class="px-2" style="font-weight: bold;">Ongoing Orders</h1>
+        <h2 class="mx-5 mt-2" style="font-size: small;">important :Select any item and click "Save" in orders page to show order cards here ... "</h2>
+
         <form class="d-flex px-2" role="search">
           <div class="search mt-2 position-relative" style="width: 35%;">
             <input class="form-control me-2  py-1 ps-5 pe-2" type="search" placeholder="Search" aria-label="Search"
-              style="width:100%;">
+            style="width:100%;">
             <img class="searchbtn position-absolute "
-              src="https://cdn.pixabay.com/photo/2018/04/18/18/56/look-for-3331255_1280.png" alt=""
-              style="height:1.2rem ; width: 1.2rem; top: 0.5rem; left: 0.4rem;" />
+            src="https://cdn.pixabay.com/photo/2018/04/18/18/56/look-for-3331255_1280.png" alt=""
+            style="height:1.2rem ; width: 1.2rem; top: 0.5rem; left: 0.4rem;" />
           </div>
         </form>
-
-
+        
+        
         <div class="container mt-1">
           <ul class="nav nav-underline" id="myTab" role="tablist" style="font-weight: bold;">
-              <li class="nav-item" role="presentation">
-                  <button class="nav-link active" id="section1-tab" data-bs-toggle="tab" data-bs-target="#section1" type="button"
-                      role="tab" aria-controls="section1" aria-selected="true">All</button>
-              </li>
-              <li class="nav-item" role="presentation">
-                  <button class="nav-link" id="section2-tab" data-bs-toggle="tab" data-bs-target="#section2" type="button"
-                      role="tab" aria-controls="section2" aria-selected="false">Dine in</button>
-              </li>
-              <li class="nav-item" role="presentation">
-                  <button class="nav-link" id="section3-tab" data-bs-toggle="tab" data-bs-target="#section3" type="button"
-                      role="tab" aria-controls="section3" aria-selected="false">To go</button>
-              </li>
-              <li class="nav-item" role="presentation">
-                  <button class="nav-link" id="section4-tab" data-bs-toggle="tab" data-bs-target="#section4" type="button"
-                      role="tab" aria-controls="section4" aria-selected="false">Delivery</button>
-              </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="section1-tab" data-bs-toggle="tab" data-bs-target="#section1" type="button"
+              role="tab" aria-controls="section1" aria-selected="true">All</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="section2-tab" data-bs-toggle="tab" data-bs-target="#section2" type="button"
+              role="tab" aria-controls="section2" aria-selected="false">Dine in</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="section3-tab" data-bs-toggle="tab" data-bs-target="#section3" type="button"
+              role="tab" aria-controls="section3" aria-selected="false">To go</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="section4-tab" data-bs-toggle="tab" data-bs-target="#section4" type="button"
+              role="tab" aria-controls="section4" aria-selected="false">Delivery</button>
+            </li>
           </ul>
           <div class="tab-content" id="myTabContent">
-              <div class="tab-pane fade show active mt-3" id="section1" role="tabpanel" aria-labelledby="section1-tab">
-                  <div id="cards-container-all" class="d-flex flex-wrap "></div>
+            <div class="tab-pane fade show active mt-3" id="section1" role="tabpanel" aria-labelledby="section1-tab">
+                  <div id="cards-container-all" class="d-flex flex-wrap ">
+                  </div>
               </div>
               <div class="tab-pane fade" id="section2" role="tabpanel" aria-labelledby="section2-tab">
-                  <div id="cards-container-Dine-in" class="d-flex flex-wrap"></div>
+                <div id="cards-container-Dine-in" class="d-flex flex-wrap"></div>
               </div>
               <div class="tab-pane fade" id="section3" role="tabpanel" aria-labelledby="section3-tab">
                   <div id="cards-container-To-Go" class="d-flex flex-wrap"></div>
@@ -192,6 +204,8 @@
           </div>
       </div>
     </div>
+
+    
 
     <div class="order-form py-2 px-2 rounded-3 mx-1 shadow-sm" style="width: 35rem; ">
       <form action="">
@@ -223,6 +237,7 @@
 
         </div>
         
+        
         <div id="ongoing-order-body" class="order-body" style="height: calc(38vh - 40px); overflow-y: auto;"></div>
         <div class="cooking note">
           <input class="note border-0 mt-2 rounded-2" type="text" value="" id="note" placeholder="Add cooking instructions(note)" style=" width: 90%;border-bottom: 2px gray;">
@@ -234,7 +249,7 @@
           </div>
           <div class="d-flex justify-content-between w-100" style="font-weight: 500;height: 1.8rem;">
             <p>Discount</p>
-            <p id="discount">100</p>
+            <p id="ongoing-discount">100</p>
           </div>
           
           <div class="form-check">
@@ -274,6 +289,7 @@
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 </body>
 
 </html>
