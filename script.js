@@ -1,4 +1,6 @@
 
+
+
 const menu = [
   { name: 'Chicken Biryani', price: 300, imageUrl: 'https://th.bing.com/th/id/OIP.Y6467E_Dbzh3GzFyhcnP6AHaHa?w=186&h=186&c=7&r=0&o=5&dpr=1.5&pid=1.7' },
   { name: 'Cheeseburger', price: 150, imageUrl: 'https://cdn.pixabay.com/photo/2024/04/27/12/41/ai-generated-8723664_1280.png' },
@@ -11,28 +13,12 @@ const menu = [
   { name: 'Blue Cocktail', price: 60, imageUrl: 'https://envato-shoebox-0.imgix.net/4204/24ea-634a-11e2-952c-842b2b692e1a/Blue+cocktail+in+a+big+glass.jpg?auto=compress%2Cformat&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark2.png&w=600&fit=max&markalign=center%2Cmiddle&markalpha=18&s=e88d28564e7241b04c9b148b6b1912a9' },
   { name: 'Water Bottle', price: 20, imageUrl: 'https://th.bing.com/th?id=OIP.HMRnN2phEFDzu3E63GwsjgHaH-&w=240&h=259&c=8&rs=1&qlt=90&o=6&dpr=1.5&pid=3.1&rm=2' },
 ];
-function showCustomAlert({ title = "Info", text = "An example alert with an icon", icon = "info" }) {
-  swal({
-      title: title,
-      text: text,
-      icon: icon,
-      buttons: {
-          confirm: {
-              text: "OK",
-              value: true,
-              visible: true,
-              className: "btn btn-primary",
-              closeModal: true
-          }
-      },
-      dangerMode: false // Set to false by default to avoid emphasizing danger unless specified
-  });
-}
+
+
 function menucard() {
-  // Get the card container
   const cardContainer = document.querySelector('#menucards-container');
 
-  // Generate the HTML for all cards
+  // HTML for all menu cards
   const cardsHTML = menu.map(item => `
                 <div class="card custom-card custom-margin m-2 d-flex rounded-4 p-1 " style="height: 13.6rem; width: 13rem;" data-name="${item.name}" data-price="${item.price}">
                     <img src="${item.imageUrl}" class="card-img-top mx-auto mt-1" alt="${item.name}" style="width: 7rem; height: 7rem;">
@@ -42,15 +28,11 @@ function menucard() {
                     </div>
                 </div>
             `).join('');
-
-  // Set the innerHTML of the card container
   cardContainer.innerHTML = cardsHTML;
-
-  // Add event listeners to each card
+  // Adding event listeners to each card
   document.querySelectorAll('.custom-card').forEach(card => {
     card.addEventListener('click', function () {
       addItemToOrder(this.getAttribute('data-name'), parseFloat(this.getAttribute('data-price')));
-
     });
   });
 
@@ -108,9 +90,8 @@ function menucard() {
           totalCell.textContent = (qty * price).toFixed(2);
         }
       });
-      // Add event listener for the trash icon in the newly created row
       row.querySelector('.trash-icon').addEventListener('click', () => {
-        row.remove(); // Remove the entire row when trash icon is clicked
+        row.remove();
       });
     }
   }
@@ -138,10 +119,7 @@ function menucard() {
     childList: true,
     subtree: true
   });
-
-
-
-  // Call the updateTotalPrice *SubTotal* function initially
+  // Calling the updateTotalPrice *SubTotal* function initially
   updateTotalPrice();
 
   let Payment = 0;
@@ -152,24 +130,19 @@ function menucard() {
     Payment = parseFloat(Subtotal.textContent) - parseFloat(discount.textContent);
     const totalPayment = document.querySelector('#Total-payment')
     totalPayment.textContent = ` ${Payment.toFixed(2)}`
-
   }
-
-
 
   // Function to handle adding items to an existing order after navigation
   function handleAddItemsAfterNavigation() {
-    // Parse the order index from the URL
+    // Parsing the order index from the URL
     const urlParams = new URLSearchParams(window.location.search);
     const orderIndex = urlParams.get('orderIndex');
 
-    // Example: Fetch order details from storage or database based on orderIndex
     const storedOrders = JSON.parse(getCookie('orders') || "[]");
-    // Example of getting orders from localStorage
 
     if (storedOrders && storedOrders[orderIndex]) {
       const order = storedOrders[orderIndex];
-      // Loop through items in the order to add them to the order management page
+      
       document.getElementById('order-select1').value = order.table || "";
       document.getElementById('order-nameInput').value = order.name || "";
       document.getElementById('order-dine-in').classList.toggle('active', order.orderType === "Dine In");
@@ -183,9 +156,8 @@ function menucard() {
     }
   }
 
-  // Call the function to handle adding items after navigation
+  // Calling the function to handle adding items after navigation
   handleAddItemsAfterNavigation();
-
 
   // Function to get current time in hh:mm format
   function getCurrentTime() {
@@ -198,18 +170,14 @@ function menucard() {
     return `${hours}:${minutes} | ${date}/${month}/${year}`;
   }
 
-  // Select all dateTimeSelect elements
   const dateTimeSelects = document.querySelectorAll('.dateTimeSelect');
 
-  // Loop through each select element
   dateTimeSelects.forEach(dateTimeSelect => {
     // Find the first option within each select element
     const firstOption = dateTimeSelect.querySelector('.option');
 
     if (firstOption) {
-      // Get current time
       const currentTime = getCurrentTime();
-
       // Update the text content and value of the first option
       firstOption.textContent = `Kot  II ${currentTime}  ${firstOption.textContent}`;
       firstOption.value = currentTime;
@@ -228,7 +196,6 @@ function menucard() {
   }
 }
 menucard();
-
 
 document.addEventListener("DOMContentLoaded", function () {
   clearURLParameters()
@@ -253,7 +220,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return null;
   }
 
-  
+  // Function to create orders and update orders
   function storeFormData(event) {
     event.preventDefault();
     const orderBody = document.getElementById('order-body')
@@ -307,7 +274,7 @@ document.addEventListener("DOMContentLoaded", function () {
               orders[existingOrderIndex].items.push(newItem);
             }
           });
-          // Update total payment
+          // Update\ing total payment
           orders[existingOrderIndex].totalPayment = parseFloat(orders[existingOrderIndex].totalPayment) + parseFloat(totalPayment);
         } else {
           // Add a new order entry
@@ -404,8 +371,6 @@ document.addEventListener("DOMContentLoaded", function () {
         textColor = "text-warning";
         backgroundColor = "bg-warning-subtle";
       }
-
-
       return `
         <div class="ongoingorder-cards me-3 mb-3" data-order-index="${index}" data-order='${JSON.stringify(order)}' style="height:11.2rem ;cursor:pointer;">
           <div class="table bg-light-subtle mt-1 rounded-3 pt-3 px-3" style="width:23rem; margin-bottom: 0;">
@@ -438,7 +403,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }).join('');
 
     cardContainer.innerHTML = cardsHTML;
-
 
     document.querySelectorAll('.ongoingorder-cards').forEach(card => {
       card.addEventListener('click', function () {
@@ -510,8 +474,6 @@ document.addEventListener("DOMContentLoaded", function () {
         cancelOrder(currentOrderIndex);
         document.querySelector('#ongoing-total-price').innerHTML = '00';
         document.querySelector('#ongoing-Total-payment').innerHTML = '00';
-        
-        
       } else {
         console.log('No order selected');
       }
@@ -536,7 +498,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
     });
-
+// function to cancel order 
     function cancelOrder(index) {
       const orderBody = document.getElementById('ongoing-order-body');
       orderBody.innerHTML = '';
@@ -546,11 +508,11 @@ document.addEventListener("DOMContentLoaded", function () {
       cards();
       ongoingclearFormFields()
     }
-    
+    // function to handle pay button 
     function paymentsuccess(){
       const currentOrderIndex = localStorage.getItem('currentOrderIndex');
-      const orderBody = document.querySelector('#ongoing-order-body'); // Adjust the selector to match your order body
-      const orderItems = orderBody.querySelectorAll('.ongoing-order-row'); // Adjust the selector to match your order items
+      const orderBody = document.querySelector('#ongoing-order-body');
+      const orderItems = orderBody.querySelectorAll('.ongoing-order-row'); 
 
       if (orderItems.length === 0) {
         console.log('ok')
@@ -558,7 +520,8 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       if (currentOrderIndex !== null) {
-        cancelOrder(currentOrderIndex);
+         // using cancel order func because there is no payment handling so just removing order with payment success alert/msg
+        cancelOrder(currentOrderIndex); 
         document.querySelector('#ongoing-total-price').innerHTML = '00';
         document.querySelector('#ongoing-Total-payment').innerHTML = '00';
         
@@ -572,7 +535,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     }
     document.querySelector('#pay-button').addEventListener('click',paymentsuccess)
-
+// function for direct clicking pay button in order page without save*
     function orderpaymentsuccess() {
       const orderBody = document.querySelector('#order-body');
       const orderItems = orderBody.querySelectorAll('.order-row'); 
@@ -590,8 +553,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
     document.querySelector('#orderPay-btn').addEventListener('click',orderpaymentsuccess)
-
-    
+    // function to show print successfull alert 
     document.addEventListener('click', function (event) {
       if (event.target.closest('.print-btn')) {
         showCustomAlert({
@@ -601,6 +563,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
       }})
 
+//HTML different color of cards for different orderTypes
     const dinetab = document.getElementById('cards-container-Dine-in')
     const dineorders = orders.filter(order => order.orderType === 'Dine In')
 
@@ -661,8 +624,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
 
-
-
+//HTML different color of cards for different orderTypes
     const togotab = document.getElementById('cards-container-To-Go')
     const togoOrders = orders.filter(order => order.orderType === 'To Go')
 
@@ -723,7 +685,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
 
-
+//HTML different color of cards for different orderTypes
     const deliveryTab = document.getElementById('cards-container-Delivery')
     const deliveryOrders = orders.filter(order => order.orderType === 'Delivery')
 
@@ -775,7 +737,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     deliveryTab.innerHTML = deliveryCardHtml
 
-    // Attach click event to each order card
+    // Attach click event to each order card to get order details in the rightside of ongoing-orders page
     document.querySelectorAll('.ongoingorder-cards').forEach(card => {
       card.addEventListener('click', function () {
         const order = JSON.parse(this.getAttribute('data-order'));
@@ -787,11 +749,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   }
   cards();
-
-
-
-
-
+// function to display info of order in the rightside of ongoing-orders page
   function populateForm(order) {
     document.getElementById('select2').value = order.table || "";
     document.getElementById('ongoingorder-nameInput').value = order.name;
@@ -822,23 +780,42 @@ document.addEventListener("DOMContentLoaded", function () {
             <div id="ongoing-total-prices" class="ongoing-order-price" style="width: 6rem; text-align:end">${item.price}</div>
         `;
 
-      // Append the row to the ongoingOrderBody
+      // Appends the row to the ongoingOrderBody
       ongoingOrderBody.appendChild(row);
     });
+    // Code for subtotal price of  added items and newly added items in the ongoing-order page
     let OngoingTotalPrice = 0;
     const ongoingprice = document.getElementById('ongoing-total-price');
     const priceElements = document.querySelectorAll('#ongoing-total-prices');
     priceElements.forEach(priceElement => {
       OngoingTotalPrice += parseFloat(priceElement.textContent);
     });
-    let Payment = 0;
     ongoingprice.innerHTML = `${OngoingTotalPrice.toFixed(2)}`;
+// code for Toatal Payment in the ongoing-orders page
+    let Payment = 0;
     const ongoingTotalPayment = document.getElementById('ongoing-Total-payment');
     const Subtotal = document.querySelector('#ongoing-total-price')
     const discount = document.querySelector('#ongoing-discount')
     Payment = 0
     Payment = parseFloat(Subtotal.textContent) - parseFloat(discount.textContent);
     ongoingTotalPayment.textContent = `${Payment.toFixed(2)}`
-
   }
 });
+// function for custom alert cards
+function showCustomAlert({ title = "Info", text = "An example alert with an icon", icon = "info" }) {
+  swal({
+      title: title,
+      text: text,
+      icon: icon,
+      buttons: {
+          confirm: {
+              text: "OK",
+              value: true,
+              visible: true,
+              className: "btn btn-primary",
+              closeModal: true
+          }
+      },
+      dangerMode: false 
+  });
+}

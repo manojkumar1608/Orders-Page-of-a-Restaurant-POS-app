@@ -22,7 +22,7 @@
     </symbol>
   </svg>
 
-
+  <!-- Naavbar -->
   <nav class="navbar bg-light navbar-expand-lg position-fixed navbar-light z-1"
     style="height: 2.9rem; width: 100%; top: 0rem;left: 3rem">
     <div class="container-fluid ">
@@ -47,6 +47,8 @@
     </div>
     </div>
   </nav>
+
+  <!-- SideBar -->
 
   <aside class="bg-light pt-5" style="position: fixed; top: 0; left: 0; height: 100vh; width: 3.2rem;">
     <div class="sidebar container d-flex flex-column justify-content-evenly"
@@ -77,22 +79,23 @@
         <img class="img" style="height: 2rem; width: 2rem; margin-bottom: 3rem;"
           src="https://th.bing.com/th/id/OIP.AGwbPd_PdaOKQQmrgmlIGwHaHa?w=198&h=198&c=7&r=0&o=5&dpr=1.5&pid=1.7" />
       </div>
-
-      <!-- Add any additional sidebar content here -->
     </div>
   </aside>
 
+  <!-- Content -->
   <div class="content p-1 rounded-1" style="margin: 0.5rem 0rem 0rem 3rem;">
     <div class="alert-1 z-2"></div>
     <div class="tab-content" id="pills-tabContent">
       <div class="tab-pane fade show active " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"
         tabindex="0">
         <div class="order-container d-flex flex-row w-100" style="margin-top: 2rem;">
-
+          <!-- OrdersPage-tab  -->
           <div class="menu-page bg-primar rounded-3 py-3 px-4 me-2" style="width:63%;background-color: #EEF5FF;">
             <h1 class="w-50">Order</h1>
-            <h2 class="bg-danger-subtle rounded-2 px-3 py-1" style="font-size: small;">important : Select table no, orderType,
-              customer name and click on items to select and click "Save" to show order cards in ongoing-orders page"</h2> 
+            <h2 class="bg-danger-subtle rounded-2 px-3 py-1" style="font-size: small;">important : Select table no,
+              orderType,
+              customer name and click on items to select and click "Save" to show order cards in ongoing-orders page"
+            </h2>
             <form class="d-flex" role="search">
               <div class="search mb-2 position-relative" style="width: 55%;">
                 <input class="form-control me-2  py-1 ps-5 pe-2" type="search" placeholder="Search" aria-label="Search"
@@ -107,6 +110,7 @@
               style="height: calc(100vh - 100px);"></div>
 
           </div>
+          <!-- Bill card in the order page  -->
           <div class="order-form py-2 px-2 rounded-3 mx-2 shadow-sm" style="width: 26rem; ">
             <form action="">
               <select id="order-select1" class="select-table bg-primary text-light p-2 rounded-2 mb-1"
@@ -122,6 +126,8 @@
               </select>
               <input id="order-nameInput" class=" border-0  shadow-sm mb-1 rounded-3 ms-2 p-1 px-2"
                 style="width: 97%; font-weight: 700; background-color: #EEF5FF;" type="text" placeholder="Name:" />
+
+              <!-- Ordertype Buttons Dine-In, To Go, Delivery -->
               <ul class="nav nav-tabs mt-1 border-0" id="myTab" role="tablist">
                 <li class="nav-item mb-2" role="presentation">
                   <button class="nav-link active" id="order-dine-in" data-bs-toggle="tab" data-bs-target="#home"
@@ -136,13 +142,13 @@
                     type="button" role="tab" aria-controls="messages" aria-selected="false">Delivery</button>
                 </li>
               </ul>
+              <!-- order body ( Items, Prices, Discount, Total payment )  -->
 
               <div class="order-bill-container">
                 <div class="order-header d-flex justify-content-between">
                   <div class="order-item">Item</div>
                   <div class="order-quantity d-flex justify-content-end align-items-center" style="width: 6rem;">Qty
                   </div>
-
                   <div class="order-price-name">Price</div>
                   <div class="order-actions"></div>
                 </div>
@@ -187,11 +193,13 @@
           </div>
         </div>
       </div>
+      <!-- Ongoing-Orders Page tab -->
       <div class="tab-pane fade " id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
         <div class="ongoing-orders-page d-flex flex-row w-100" style=" margin-top: 2rem;">
           <div class="ongoing-orders-cards rounded-2 py-2" style="background-color: #EEF5FF;width:100%;">
             <h1 class="px-2" style="font-weight: bold;">Ongoing Orders</h1>
-            <h2 class="mt-2 mx-1 bg-danger-subtle px-2 mx-1 rounded-2 py-1" style="font-size: smaller;">important : Clicking on
+            <h2 class="mt-2 mx-1 bg-danger-subtle px-2 mx-1 rounded-2 py-1" style="font-size: smaller;">important :
+              Clicking on
               order card: displays order info. we can switch between tabs for different order types. we can Pay, Print,
               Cancel and mainly add new items to the existing order by "edit icon" in the card or from the rightside
               "Add items button".</h2>
@@ -205,6 +213,8 @@
                   style="height:1.2rem ; width: 1.2rem; top: 0.5rem; left: 0.4rem;" />
               </div>
             </form>
+
+            <!-- OrderType Tabs -->
 
             <div class="container mt-1">
               <ul class="nav nav-underline" id="myTab" role="tablist" style="font-weight: bold;">
@@ -225,6 +235,7 @@
                     type="button" role="tab" aria-controls="section4" aria-selected="false">Delivery</button>
                 </li>
               </ul>
+              <!-- ordertype tabs content -->
               <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active mt-3" id="section1" role="tabpanel"
                   aria-labelledby="section1-tab">
@@ -246,6 +257,7 @@
           </div>
 
 
+          <!-- Bill card for ongoing-orders: displays info of a particular order-->
 
           <div class="order-form py-2 px-2 rounded-3 mx-1 shadow-sm" style="width: 35rem; ">
             <form action="">
@@ -260,6 +272,7 @@
                 <option class="table-option mb-3 text-black bg-light" style="font-weight: 500;" value="Table-3">Table
                   No.3</option>
               </select>
+
               <input id="ongoingorder-nameInput" class=" border-0 shadow-sm mb-1 rounded-3 ms-2 p-1 px-2"
                 style="width: 97%; font-weight: 700;background-color: #EEF5FF;" type="text" placeholder="Name:" />
               <ul class="nav nav-tabs mt-1 border-0" id="myTab" role="tablist">
