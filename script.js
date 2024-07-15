@@ -307,7 +307,7 @@ document.addEventListener("DOMContentLoaded", function () {
         text: "Order Placed Successfully",
         icon: "success"
     });
-      cards();
+      allOrderCards();
     } else {
       showCustomAlert({
         title: "info",
@@ -352,79 +352,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Function to generate ordercards HTML for different ordertypes
-function generateOrderCardHtml(orderType, containerId) {
-  const orders = JSON.parse(getCookie('orders') || "[]");
-
-  const container = document.getElementById(containerId);
-  const filteredOrders = orders.filter(order => order.orderType === orderType);
-
-  const cardsHtml = filteredOrders.map((order, index) => {
-    let borderColor, textColor, backgroundColor;
-    switch (order.orderType) {
-      case "Dine In":
-        borderColor = "lightgreen";
-        textColor = "text-success";
-        backgroundColor = "bg-success-subtle";
-        break;
-      case "To Go":
-        borderColor = "#ff0000";
-        textColor = "text-danger";
-        backgroundColor = "bg-danger-subtle";
-        break;
-      case "Delivery":
-        borderColor = "#ff9f00";
-        textColor = "text-warning";
-        backgroundColor = "bg-warning-subtle";
-        break;
-    }
-    return `
-      <div class="ongoingorder-cards me-3 mb-3" data-order-index="${index}" data-order='${JSON.stringify(order)}' style="height:11.2rem ;cursor:pointer;">
-        <div class="table bg-light-subtle mt-2 rounded-3 pt-3 px-3" style="width:23rem; margin-bottom: 0;">
-          <div class="tableno d-flex justify-content-between w-100" style="height: 1.8rem;font-weight: 600;">
-            <p>${order.table}</p>
-            <p id="orderid">#1234</p>
-          </div>
-          <div class="d-flex justify-content-between w-100" style="font-weight: 600;height: 1.8rem;">
-            <p>Name:${order.name}</p>
-            <p id="taotalpayment">Rs${order.totalPayment}</p>
-          </div>
-          <div class="buttons d-flex justify-content-between px-1 py-2">
-            <div class="buttons">
-              <button type="button" class="btn btn-light bg-primary px-4 mx-1" style="font-weight: bold; color:white; padding-top:0.4rem;padding-bottom:0.4rem;">Pay</button>
-              <button type="button" class="btn btn-light mx-1" style="font-weight: bold;color:gray; background-color: #EEF5FF; padding-top:0.4rem;padding-bottom:0.4rem;">Pay later</button>
-            </div>
-            <div class="">
-              <i class="cancel-icon btn bi bi-x-lg px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
-              <i class="print-btn btn bi bi-printer px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
-              <i class="edit-btn btn bi bi-pencil px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
-            </div>
-          </div>
-        </div>
-        <div class="ordertype px-4 d-flex justify-content-between rounded-1 align-items-center ${backgroundColor} w-100" style="height: 2.8rem; font-weight: 500; border-top: 2px dashed ${borderColor};">
-          <p class="m-0 ${textColor}">${order.orderType}</p>
-          <i class="bi bi-alarm text-primary" style="font-size: small;"> 15min</i>
-        </div>
-      </div>
-    `;
-  }).join('');
-
-  container.innerHTML = cardsHtml;
-
-  document.querySelectorAll('.ongoingorder-cards').forEach(card => {
-    card.addEventListener('click', function () {
-      const order = JSON.parse(this.getAttribute('data-order'));
-      const orderIndex = this.getAttribute('data-order-index');
-      populateForm(order);
-      localStorage.setItem('currentOrderIndex', orderIndex);
-    });
-  });
-}
-
-//  cards for different order types
-generateOrderCardHtml( 'Dine In', 'cards-container-Dine-in');
-generateOrderCardHtml( 'To Go', 'cards-container-To-Go');
-generateOrderCardHtml( 'Delivery', 'cards-container-Delivery');
+ 
 
 
   function allOrderCards() {
@@ -487,8 +415,184 @@ generateOrderCardHtml( 'Delivery', 'cards-container-Delivery');
         localStorage.setItem('currentOrderIndex', orderIndex);
       });
     });
-  }
-  allOrderCards();
+
+    const dinecardContainer = document.getElementById('cards-container-Dine-in');
+    const filteredOrders = orders.filter(order => order.orderType === 'Dine In');
+
+    const dinecardsHTML = filteredOrders.map((order, index) => {
+      let borderColor, textColor, backgroundColor;
+      if (order.orderType === "Dine In") {
+        borderColor = "lightgreen";
+        textColor = "text-success";
+        backgroundColor = "bg-success-subtle";
+      } else if (order.orderType === "To Go") {
+        borderColor = "#ff0000";
+        textColor = "text-danger";
+        backgroundColor = "bg-danger-subtle";
+      } else if (order.orderType === "Delivery") {
+        borderColor = "#ff9f00";
+        textColor = "text-warning";
+        backgroundColor = "bg-warning-subtle";
+      }
+      return `
+        <div class="ongoingorder-cards me-3 mb-3" data-order-index="${index}" data-order='${JSON.stringify(order)}' style="height:11.2rem ;cursor:pointer;">
+          <div class="table bg-light-subtle mt-1 rounded-3 pt-3 px-3" style="width:23rem; margin-bottom: 0;">
+            <div class="tableno d-flex justify-content-between w-100" style="height: 1.8rem;font-weight: 600;">
+              <p>${order.table}</p>
+              <p id="orderid">#1234</p>
+            </div>
+            <div class="d-flex justify-content-between w-100" style="font-weight: 600;height: 1.8rem;">
+              <p>Name:${order.name}</p>
+              <p id="taotalpayment">Rs${order.totalPayment}</p>
+            </div>
+            <div class="buttons d-flex justify-content-between px-1 py-2">
+              <div class="buttons">
+                <button type="button" class="btn btn-light bg-primary px-4 mx-1" style="font-weight: bold; color:white; padding-top:0.4rem;padding-bottom:0.4rem;">Pay</button>
+                <button type="button" class="btn btn-light mx-1" style="font-weight: bold;color:gray; background-color: #EEF5FF; padding-top:0.4rem;padding-bottom:0.4rem;">Pay later</button>
+              </div>
+              <div class="">
+                <i class="cancel-icon btn btn bi bi-x-lg px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
+                <i class="print-btn btn bi bi-printer px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
+                <i class="edit-btn btn bi bi-pencil px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
+              </div>
+            </div>
+          </div>
+          <div class="ordertype px-4 d-flex justify-content-between rounded-1 align-items-center ${backgroundColor} w-100" style="height: 2.8rem; font-weight: 500; border-top: 2px dashed ${borderColor};">
+            <p class="m-0 ${textColor}">${order.orderType}</p>
+            <i class="bi bi-alarm text-primary" style="font-size: small;"> 15min</i>
+          </div>
+        </div>
+        `;
+    }).join('');
+
+    dinecardContainer.innerHTML = dinecardsHTML;
+
+    document.querySelectorAll('.ongoingorder-cards').forEach(card => {
+      card.addEventListener('click', function () {
+        const order = JSON.parse(this.getAttribute('data-order'));
+        const orderIndex = this.getAttribute('data-order-index');
+        populateForm(order);
+        localStorage.setItem('currentOrderIndex', orderIndex);
+      });
+    });
+    const deliverycardContainer = document.getElementById('cards-container-Delivery');
+    const deliveryorders = orders.filter(order => order.orderType === 'Delivery');
+
+    const deliverycards = deliveryorders.map((order, index) => {
+      let borderColor, textColor, backgroundColor;
+      if (order.orderType === "Dine In") {
+        borderColor = "lightgreen";
+        textColor = "text-success";
+        backgroundColor = "bg-success-subtle";
+      } else if (order.orderType === "To Go") {
+        borderColor = "#ff0000";
+        textColor = "text-danger";
+        backgroundColor = "bg-danger-subtle";
+      } else if (order.orderType === "Delivery") {
+        borderColor = "#ff9f00";
+        textColor = "text-warning";
+        backgroundColor = "bg-warning-subtle";
+      }
+      return `
+        <div class="ongoingorder-cards me-3 mb-3" data-order-index="${index}" data-order='${JSON.stringify(order)}' style="height:11.2rem ;cursor:pointer;">
+          <div class="table bg-light-subtle mt-1 rounded-3 pt-3 px-3" style="width:23rem; margin-bottom: 0;">
+            <div class="tableno d-flex justify-content-between w-100" style="height: 1.8rem;font-weight: 600;">
+              <p>${order.table}</p>
+              <p id="orderid">#1234</p>
+            </div>
+            <div class="d-flex justify-content-between w-100" style="font-weight: 600;height: 1.8rem;">
+              <p>Name:${order.name}</p>
+              <p id="taotalpayment">Rs${order.totalPayment}</p>
+            </div>
+            <div class="buttons d-flex justify-content-between px-1 py-2">
+              <div class="buttons">
+                <button type="button" class="btn btn-light bg-primary px-4 mx-1" style="font-weight: bold; color:white; padding-top:0.4rem;padding-bottom:0.4rem;">Pay</button>
+                <button type="button" class="btn btn-light mx-1" style="font-weight: bold;color:gray; background-color: #EEF5FF; padding-top:0.4rem;padding-bottom:0.4rem;">Pay later</button>
+              </div>
+              <div class="">
+                <i class="cancel-icon btn btn bi bi-x-lg px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
+                <i class="print-btn btn bi bi-printer px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
+                <i class="edit-btn btn bi bi-pencil px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
+              </div>
+            </div>
+          </div>
+          <div class="ordertype px-4 d-flex justify-content-between rounded-1 align-items-center ${backgroundColor} w-100" style="height: 2.8rem; font-weight: 500; border-top: 2px dashed ${borderColor};">
+            <p class="m-0 ${textColor}">${order.orderType}</p>
+            <i class="bi bi-alarm text-primary" style="font-size: small;"> 15min</i>
+          </div>
+        </div>
+        `;
+    }).join('');
+
+    deliverycardContainer.innerHTML = deliverycards;
+
+    document.querySelectorAll('.ongoingorder-cards').forEach(card => {
+      card.addEventListener('click', function () {
+        const order = JSON.parse(this.getAttribute('data-order'));
+        const orderIndex = this.getAttribute('data-order-index');
+        populateForm(order);
+        localStorage.setItem('currentOrderIndex', orderIndex);
+      });
+    });
+    const togocardContainer = document.getElementById('cards-container-To-Go');
+    const togoorders = orders.filter(order => order.orderType === 'To Go');
+
+    const togocardsHtml = togoorders.map((order, index) => {
+      let borderColor, textColor, backgroundColor;
+      if (order.orderType === "Dine In") {
+        borderColor = "lightgreen";
+        textColor = "text-success";
+        backgroundColor = "bg-success-subtle";
+      } else if (order.orderType === "To Go") {
+        borderColor = "#ff0000";
+        textColor = "text-danger";
+        backgroundColor = "bg-danger-subtle";
+      } else if (order.orderType === "Delivery") {
+        borderColor = "#ff9f00";
+        textColor = "text-warning";
+        backgroundColor = "bg-warning-subtle";
+      }
+      return `
+        <div class="ongoingorder-cards me-3 mb-3" data-order-index="${index}" data-order='${JSON.stringify(order)}' style="height:11.2rem ;cursor:pointer;">
+          <div class="table bg-light-subtle mt-1 rounded-3 pt-3 px-3" style="width:23rem; margin-bottom: 0;">
+            <div class="tableno d-flex justify-content-between w-100" style="height: 1.8rem;font-weight: 600;">
+              <p>${order.table}</p>
+              <p id="orderid">#1234</p>
+            </div>
+            <div class="d-flex justify-content-between w-100" style="font-weight: 600;height: 1.8rem;">
+              <p>Name:${order.name}</p>
+              <p id="taotalpayment">Rs${order.totalPayment}</p>
+            </div>
+            <div class="buttons d-flex justify-content-between px-1 py-2">
+              <div class="buttons">
+                <button type="button" class="btn btn-light bg-primary px-4 mx-1" style="font-weight: bold; color:white; padding-top:0.4rem;padding-bottom:0.4rem;">Pay</button>
+                <button type="button" class="btn btn-light mx-1" style="font-weight: bold;color:gray; background-color: #EEF5FF; padding-top:0.4rem;padding-bottom:0.4rem;">Pay later</button>
+              </div>
+              <div class="">
+                <i class="cancel-icon btn btn bi bi-x-lg px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
+                <i class="print-btn btn bi bi-printer px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
+                <i class="edit-btn btn bi bi-pencil px-2 mx-1 py-1" style="background-color: #EEF5FF;"></i>
+              </div>
+            </div>
+          </div>
+          <div class="ordertype px-4 d-flex justify-content-between rounded-1 align-items-center ${backgroundColor} w-100" style="height: 2.8rem; font-weight: 500; border-top: 2px dashed ${borderColor};">
+            <p class="m-0 ${textColor}">${order.orderType}</p>
+            <i class="bi bi-alarm text-primary" style="font-size: small;"> 15min</i>
+          </div>
+        </div>
+        `;
+    }).join('');
+
+    togocardContainer.innerHTML = togocardsHtml;
+
+    document.querySelectorAll('.ongoingorder-cards').forEach(card => {
+      card.addEventListener('click', function () {
+        const order = JSON.parse(this.getAttribute('data-order'));
+        const orderIndex = this.getAttribute('data-order-index');
+        populateForm(order);
+        localStorage.setItem('currentOrderIndex', orderIndex);
+      });
+    });
 
     function addItemBtn() {
       const currentOrderIndex = localStorage.getItem('currentOrderIndex');
@@ -543,7 +647,7 @@ generateOrderCardHtml( 'Delivery', 'cards-container-Delivery');
       let orders = JSON.parse(getCookie('orders') || "[]");
       orders.splice(index, 1);
       setCookie('orders', JSON.stringify(orders), 7);
-      cards();
+      allOrderCards();
       ongoingclearFormFields()
     }
       const cancelbtn = document.querySelector('#cancel-button');
@@ -642,7 +746,9 @@ generateOrderCardHtml( 'Delivery', 'cards-container-Delivery');
           icon: "success"
       });
       }})
-
+    }
+    allOrderCards();
+  
   
 // function to display info of order in the rightside of ongoing-orders page
   function populateForm(order) {
