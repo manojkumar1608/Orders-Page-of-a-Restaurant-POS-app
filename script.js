@@ -352,8 +352,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
- 
-
 
   function allOrderCards() {
     const orders = JSON.parse(getCookie('orders') || "[]");
@@ -416,6 +414,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
 
+    // Html for Dine In OrderCards
     const dinecardContainer = document.getElementById('cards-container-Dine-in');
     const filteredOrders = orders.filter(order => order.orderType === 'Dine In');
 
@@ -475,6 +474,8 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.setItem('currentOrderIndex', orderIndex);
       });
     });
+
+    // Html for Delivery Ordercards
     const deliverycardContainer = document.getElementById('cards-container-Delivery');
     const deliveryorders = orders.filter(order => order.orderType === 'Delivery');
 
@@ -534,6 +535,7 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.setItem('currentOrderIndex', orderIndex);
       });
     });
+    // Html for ToGo OrderCards 
     const togocardContainer = document.getElementById('cards-container-To-Go');
     const togoorders = orders.filter(order => order.orderType === 'To Go');
 
